@@ -235,18 +235,17 @@ main {
 
 .match-header {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px;
+  flex-direction: column;
+  gap: 2px;
   font-size: 0.85rem;
   color: var(--text-muted);
 }
 
-.time-block {
+.match-header-top {
   display: flex;
-  flex-direction: column;
-  gap: 2px;
-  line-height: 1.2;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
 }
 
 .match-header .time {

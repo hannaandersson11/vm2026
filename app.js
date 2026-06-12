@@ -143,12 +143,12 @@ function matchCard(match, now) {
   return `
     <div class="${classes.join(" ")}">
       <div class="match-header">
-        <div class="time-block">
+        <div class="match-header-top">
           <span class="time">${match.time}</span>
-          ${localTimeLabel(match)}
+          ${statusBadge}
+          <span class="stage-badge">${stageLabel(match)}</span>
         </div>
-        ${statusBadge}
-        <span class="stage-badge">${stageLabel(match)}</span>
+        ${localTimeLabel(match)}
       </div>
       <div class="match-teams">
         <div class="team-row${homeRowClass}">
