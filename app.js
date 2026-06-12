@@ -2,6 +2,9 @@ const WEEKDAYS = ["söndag", "måndag", "tisdag", "onsdag", "torsdag", "fredag",
 const MONTHS = ["januari", "februari", "mars", "april", "maj", "juni", "juli", "augusti", "september", "oktober", "november", "december"];
 const RELATIVE_DAY_LABELS = { "-1": "Igår", "0": "Idag", "1": "Imorgon" };
 const LIVE_DURATION_MS = 2.5 * 60 * 60 * 1000;
+const LIVE_SCORES_URL = "/api/scores";
+
+let liveScores = null;
 
 function todayKey() {
   const d = new Date();
@@ -33,9 +36,34 @@ function matchCard(match, now) {
   const isSweden = match.home === "Sverige" || match.away === "Sverige";
   const today = todayKey();
   const isToday = match.date === today;
-  const isPast = match.homeScore !== null && match.awayScore !== null;
-  const start = new Date(match.datetime);
-  const isLive = !isPast && now >= start && now - start <= LIVE_DURATION_MS;
+
+  let homeScoreValue = match.homeScore;
+  let awayScoreValue = match.awayScore;
+  let isFinished = homeScoreValue !== null && awayScoreValue !== null;
+  let isLive = false;
+  let suppressLive = false;
+
+  const live = liveScores && liveScores[match.fdId];
+  if (live) {
+    if (live.status === "IN_PLAY" || live.status === "PAUSED") {
+      isLive = true;
+      homeScoreValue = live.home;
+      awayScoreValue = live.away;
+    } else if (live.status === "FINISHED" || live.status === "AWARDED") {
+      isFinished = true;
+      homeScoreValue = live.home;
+      awayScoreValue = live.away;
+    } else if (live.status === "POSTPONED" || live.status === "SUSPENDED" || live.status === "CANCELLED") {
+      suppressLive = true;
+    }
+  }
+
+  if (!isLive && !isFinished && !suppressLive) {
+    const start = new Date(match.datetime);
+    isLive = now >= start && now - start <= LIVE_DURATION_MS;
+  }
+
+  const showScore = isFinished || isLive;
 
   const homeFlag = match.homeFlag ? `<span class="flag">${match.homeFlag}</span>` : "";
   const awayFlag = match.awayFlag ? `<span class="flag">${match.awayFlag}</span>` : "";
@@ -56,15 +84,17 @@ function matchCard(match, now) {
   let awayRowClass = "";
   let homeScore = "";
   let awayScore = "";
-  if (isPast) {
-    homeScore = `<span class="team-score">${match.homeScore}</span>`;
-    awayScore = `<span class="team-score">${match.awayScore}</span>`;
-    if (match.homeScore > match.awayScore) {
-      homeRowClass = " winner";
-      awayRowClass = " loser";
-    } else if (match.awayScore > match.homeScore) {
-      awayRowClass = " winner";
-      homeRowClass = " loser";
+  if (showScore) {
+    homeScore = `<span class="team-score">${homeScoreValue}</span>`;
+    awayScore = `<span class="team-score">${awayScoreValue}</span>`;
+    if (isFinished) {
+      if (homeScoreValue > awayScoreValue) {
+        homeRowClass = " winner";
+        awayRowClass = " loser";
+      } else if (awayScoreValue > homeScoreValue) {
+        awayRowClass = " winner";
+        homeRowClass = " loser";
+      }
     }
   }
 
@@ -259,12 +289,28 @@ document.getElementById("search").addEventListener("input", render);
   document.getElementById(id).addEventListener("change", render)
 );
 
+async function fetchLiveScores() {
+  try {
+    const res = await fetch(LIVE_SCORES_URL);
+    if (!res.ok) return;
+    const data = await res.json();
+    liveScores = data.matches;
+    render();
+  } catch {
+    // Ingen uppkoppling eller proxyn är otillgänglig – visa statisk data från matches.js.
+  }
+}
+
 render();
 scrollToToday();
+fetchLiveScores();
 
-// Keep "idag"/"pågår"-status fresh while the app stays open
+// Keep "idag"/"pågår"-status och liveresultat färska medan appen är öppen
 setInterval(() => {
-  if (document.visibilityState === "visible") render();
+  if (document.visibilityState === "visible") {
+    render();
+    fetchLiveScores();
+  }
 }, 60000);
 
 let wasHidden = false;

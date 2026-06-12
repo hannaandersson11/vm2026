@@ -1,0 +1,7 @@
+{
+  "name": "vm2026",
+  "private": true,
+  "engines": {
+    "node": ">=20"
+  }
+}
