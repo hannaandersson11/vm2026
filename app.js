@@ -1,6 +1,7 @@
 const WEEKDAYS = ["söndag", "måndag", "tisdag", "onsdag", "torsdag", "fredag", "lördag"];
 const MONTHS = ["januari", "februari", "mars", "april", "maj", "juni", "juli", "augusti", "september", "oktober", "november", "december"];
 const RELATIVE_DAY_LABELS = { "-1": "Igår", "0": "Idag", "1": "Imorgon" };
+const GROUPS = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"];
 const LIVE_DURATION_MS = 2.5 * 60 * 60 * 1000;
 const LIVE_SCORES_URL = "/api/scores";
 
@@ -32,14 +33,10 @@ function channelBadge(channel) {
   return `<span class="badge badge-unknown">Ej bekräftad</span>`;
 }
 
-function matchCard(match, now) {
-  const isSweden = match.home === "Sverige" || match.away === "Sverige";
-  const today = todayKey();
-  const isToday = match.date === today;
-
-  let homeScoreValue = match.homeScore;
-  let awayScoreValue = match.awayScore;
-  let isFinished = homeScoreValue !== null && awayScoreValue !== null;
+function getMatchState(match, now) {
+  let home = match.homeScore;
+  let away = match.awayScore;
+  let isFinished = home !== null && away !== null;
   let isLive = false;
   let suppressLive = false;
 
@@ -47,12 +44,12 @@ function matchCard(match, now) {
   if (live) {
     if (live.status === "IN_PLAY" || live.status === "PAUSED") {
       isLive = true;
-      homeScoreValue = live.home;
-      awayScoreValue = live.away;
+      home = live.home;
+      away = live.away;
     } else if (live.status === "FINISHED" || live.status === "AWARDED") {
       isFinished = true;
-      homeScoreValue = live.home;
-      awayScoreValue = live.away;
+      home = live.home;
+      away = live.away;
     } else if (live.status === "POSTPONED" || live.status === "SUSPENDED" || live.status === "CANCELLED") {
       suppressLive = true;
     }
@@ -63,6 +60,15 @@ function matchCard(match, now) {
     isLive = now >= start && now - start <= LIVE_DURATION_MS;
   }
 
+  return { home, away, isFinished, isLive };
+}
+
+function matchCard(match, now) {
+  const isSweden = match.home === "Sverige" || match.away === "Sverige";
+  const today = todayKey();
+  const isToday = match.date === today;
+
+  const { home: homeScoreValue, away: awayScoreValue, isFinished, isLive } = getMatchState(match, now);
   const showScore = isFinished || isLive;
 
   const homeFlag = match.homeFlag ? `<span class="flag">${match.homeFlag}</span>` : "";
@@ -202,6 +208,105 @@ function render() {
   setupTodayObserver();
 }
 
+function newStandingsRow(name, flag) {
+  return { name, flag, played: 0, won: 0, drawn: 0, lost: 0, goalsFor: 0, goalsAgainst: 0, points: 0 };
+}
+
+function computeStandings(now) {
+  const tables = {};
+  for (const g of GROUPS) tables[g] = {};
+
+  for (const m of MATCHES) {
+    if (m.stage !== "Gruppspel") continue;
+    const table = tables[m.group];
+    if (!table[m.home]) table[m.home] = newStandingsRow(m.home, m.homeFlag);
+    if (!table[m.away]) table[m.away] = newStandingsRow(m.away, m.awayFlag);
+
+    const { home, away, isFinished } = getMatchState(m, now);
+    if (!isFinished) continue;
+
+    const homeRow = table[m.home];
+    const awayRow = table[m.away];
+    homeRow.played++;
+    awayRow.played++;
+    homeRow.goalsFor += home;
+    homeRow.goalsAgainst += away;
+    awayRow.goalsFor += away;
+    awayRow.goalsAgainst += home;
+    if (home > away) {
+      homeRow.won++;
+      awayRow.lost++;
+      homeRow.points += 3;
+    } else if (away > home) {
+      awayRow.won++;
+      homeRow.lost++;
+      awayRow.points += 3;
+    } else {
+      homeRow.drawn++;
+      awayRow.drawn++;
+      homeRow.points++;
+      awayRow.points++;
+    }
+  }
+
+  const standings = {};
+  for (const g of GROUPS) {
+    standings[g] = Object.values(tables[g]).sort(
+      (a, b) =>
+        b.points - a.points ||
+        (b.goalsFor - b.goalsAgainst) - (a.goalsFor - a.goalsAgainst) ||
+        b.goalsFor - a.goalsFor ||
+        a.name.localeCompare(b.name)
+    );
+  }
+  return standings;
+}
+
+function standingsTable(group, rows) {
+  return `
+    <div class="standings-group">
+      <h2 class="standings-heading">Grupp ${group}</h2>
+      <table class="standings-table">
+        <thead>
+          <tr>
+            <th class="col-team">Lag</th>
+            <th>S</th>
+            <th>V</th>
+            <th>O</th>
+            <th>F</th>
+            <th>MS</th>
+            <th>P</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${rows
+            .map((r, i) => {
+              const flag = r.flag ? `<span class="flag">${r.flag}</span>` : "";
+              const rowClass = r.name === "Sverige" ? " sweden" : "";
+              return `
+                <tr class="${rowClass}">
+                  <td class="col-team"><span class="standings-pos">${i + 1}</span>${flag} ${r.name}</td>
+                  <td>${r.played}</td>
+                  <td>${r.won}</td>
+                  <td>${r.drawn}</td>
+                  <td>${r.lost}</td>
+                  <td>${r.goalsFor - r.goalsAgainst}</td>
+                  <td class="col-points">${r.points}</td>
+                </tr>
+              `;
+            })
+            .join("")}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+function renderStandings() {
+  const standings = computeStandings(new Date());
+  document.getElementById("standings-list").innerHTML = GROUPS.map((g) => standingsTable(g, standings[g])).join("");
+}
+
 function findTodayTarget() {
   const today = todayKey();
   const groups = document.querySelectorAll(".date-group");
@@ -262,7 +367,7 @@ document.getElementById("reset-filters").addEventListener("click", () => {
 });
 
 // Dark mode toggle, persisted in localStorage (falls back to system preference)
-const THEME_COLORS = { light: "#b8540a", dark: "#14181a" };
+const THEME_COLORS = { light: "#1f7a4c", dark: "#14181a" };
 const themeToggle = document.getElementById("theme-toggle");
 const themeIcon = themeToggle.querySelector("span");
 const metaThemeColor = document.querySelector('meta[name="theme-color"]');
@@ -289,6 +394,30 @@ document.getElementById("search").addEventListener("input", render);
   document.getElementById(id).addEventListener("change", render)
 );
 
+// Bottom nav: växla mellan "Matcher" och "Tabeller"
+const views = {
+  matches: document.getElementById("view-matches"),
+  standings: document.getElementById("view-standings"),
+};
+const navButtons = document.querySelectorAll(".nav-btn");
+
+function setActiveView(view) {
+  for (const [name, el] of Object.entries(views)) {
+    el.hidden = name !== view;
+  }
+  navButtons.forEach((btn) => btn.classList.toggle("active", btn.dataset.view === view));
+  if (view === "standings") {
+    renderStandings();
+    if (todayObserver) todayObserver.disconnect();
+    document.getElementById("today-fab").classList.remove("visible");
+  } else {
+    setupTodayObserver();
+  }
+  localStorage.setItem("activeView", view);
+}
+
+navButtons.forEach((btn) => btn.addEventListener("click", () => setActiveView(btn.dataset.view)));
+
 async function fetchLiveScores() {
   try {
     const res = await fetch(LIVE_SCORES_URL);
@@ -296,12 +425,14 @@ async function fetchLiveScores() {
     const data = await res.json();
     liveScores = data.matches;
     render();
+    if (!views.standings.hidden) renderStandings();
   } catch {
     // Ingen uppkoppling eller proxyn är otillgänglig – visa statisk data från matches.js.
   }
 }
 
 render();
+setActiveView(localStorage.getItem("activeView") || "matches");
 scrollToToday();
 fetchLiveScores();
 
@@ -309,6 +440,7 @@ fetchLiveScores();
 setInterval(() => {
   if (document.visibilityState === "visible") {
     render();
+    if (!views.standings.hidden) renderStandings();
     fetchLiveScores();
   }
 }, 60000);

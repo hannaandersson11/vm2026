@@ -6,7 +6,7 @@
 <title>VM 2026 – Matcher, tider &amp; TV-kanal</title>
 <link rel="stylesheet" href="styles.css">
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#b8540a">
+<meta name="theme-color" content="#1f7a4c">
 <link rel="icon" href="icons/icon-192.png" type="image/png">
 <link rel="apple-touch-icon" href="icons/icon-180.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -76,20 +76,42 @@
     </div>
   </section>
 
-  <p class="result-count" id="result-count"></p>
+  <section id="view-matches" class="view">
+    <p class="result-count" id="result-count"></p>
 
-  <div id="match-list"></div>
+    <div id="match-list"></div>
 
-  <p class="legend">
-    <span class="badge badge-svt">SVT</span> och
-    <span class="badge badge-tv4">TV4</span> delar sändningsrättigheterna för VM 2026.
-    <span class="badge badge-unknown">Ej bekräftad</span> betyder att exakt kanal för den
-    matchen inte gick att bekräfta i nuläget – kolla TV-tablå närmare matchdagen.
-    Tider visas i svensk tid (CEST).
-  </p>
+    <p class="legend">
+      <span class="badge badge-svt">SVT</span> och
+      <span class="badge badge-tv4">TV4</span> delar sändningsrättigheterna för VM 2026.
+      <span class="badge badge-unknown">Ej bekräftad</span> betyder att exakt kanal för den
+      matchen inte gick att bekräfta i nuläget – kolla TV-tablå närmare matchdagen.
+      Tider visas i svensk tid (CEST).
+    </p>
+  </section>
+
+  <section id="view-standings" class="view" hidden>
+    <div id="standings-list"></div>
+    <p class="legend">
+      Ställningen baseras på poäng, målskillnad och gjorda mål. Vid lika på allt
+      sorteras lagen i bokstavsordning – FIFA:s fullständiga utslagsregler
+      (t.ex. inbördes möte och fair play) tillämpas inte här.
+    </p>
+  </section>
 </main>
 
 <button type="button" id="today-fab" class="today-fab">Idag</button>
+
+<nav class="bottom-nav">
+  <button type="button" class="nav-btn active" data-view="matches">
+    <span class="nav-icon" aria-hidden="true">📅</span>
+    <span>Matcher</span>
+  </button>
+  <button type="button" class="nav-btn" data-view="standings">
+    <span class="nav-icon" aria-hidden="true">📊</span>
+    <span>Tabeller</span>
+  </button>
+</nav>
 
 <script src="data/matches.js"></script>
 <script src="app.js"></script>

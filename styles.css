@@ -1,6 +1,6 @@
 :root {
+  --primary: #1f7a4c;
   --accent: #b8540a;
-  --gold: #f4c542;
   --svt: #1e4ed8;
   --tv4: #e2231a;
   --grey: #9aa0a6;
@@ -11,14 +11,14 @@
   --text-subtle: #888;
   --border: #ccc;
   --chip-bg: #eef1ef;
-  --sweden-bg: #fffdf3;
+  --sweden-bg: #fff7ed;
   --shadow: rgba(0, 0, 0, 0.06);
   --shadow-strong: rgba(0, 0, 0, 0.08);
 }
 
 [data-theme="dark"] {
+  --primary: #4ade80;
   --accent: #e8740a;
-  --gold: #f4c542;
   --svt: #6f96f5;
   --tv4: #ff6b61;
   --grey: #888d93;
@@ -29,7 +29,7 @@
   --text-subtle: #8c9296;
   --border: #3a4044;
   --chip-bg: #2a3134;
-  --sweden-bg: #2a2718;
+  --sweden-bg: #2b2118;
   --shadow: rgba(0, 0, 0, 0.4);
   --shadow-strong: rgba(0, 0, 0, 0.5);
 }
@@ -50,6 +50,7 @@ main {
   max-width: 800px;
   margin: 0 auto;
   padding: 16px;
+  padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px));
 }
 
 .filters {
@@ -103,7 +104,7 @@ main {
 }
 
 .filter-count {
-  background: var(--accent);
+  background: var(--primary);
   color: #fff;
   border-radius: 999px;
   font-size: 0.7rem;
@@ -155,6 +156,10 @@ main {
   color: var(--text);
 }
 
+.checkbox-group input[type="checkbox"] {
+  accent-color: var(--primary);
+}
+
 .reset-btn {
   align-self: center;
   padding: 6px 14px;
@@ -183,8 +188,8 @@ main {
 
 .date-heading {
   font-size: 1rem;
-  color: var(--accent);
-  border-bottom: 2px solid var(--gold);
+  color: var(--primary);
+  border-bottom: 2px solid var(--primary);
   padding: 8px 0 4px;
   margin: 18px 0 10px;
   text-transform: capitalize;
@@ -216,12 +221,12 @@ main {
 }
 
 .match-card.sweden {
-  border-left-color: var(--gold);
+  border-left-color: var(--accent);
   background: var(--sweden-bg);
 }
 
 .match-card.today {
-  border-left-color: var(--accent);
+  border-left-color: var(--primary);
 }
 
 .match-card.live {
@@ -244,7 +249,7 @@ main {
 }
 
 .today-badge {
-  background: var(--accent);
+  background: var(--primary);
   color: #fff;
   font-size: 0.7rem;
   padding: 2px 6px;
@@ -306,7 +311,7 @@ main {
 }
 
 .team-row.winner {
-  color: var(--accent);
+  color: var(--primary);
 }
 
 .team-row.loser {
@@ -392,7 +397,7 @@ main {
 .today-fab {
   position: fixed;
   right: 16px;
-  bottom: 16px;
+  bottom: calc(72px + env(safe-area-inset-bottom, 0px));
   z-index: 20;
   display: inline-flex;
   align-items: center;
@@ -400,7 +405,7 @@ main {
   padding: 10px 16px;
   border: none;
   border-radius: 999px;
-  background: var(--accent);
+  background: var(--primary);
   color: #fff;
   font-size: 0.9rem;
   font-weight: 700;
@@ -421,4 +426,116 @@ main {
 
 .today-fab:active {
   transform: scale(0.96);
+}
+
+.bottom-nav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 30;
+  display: flex;
+  background: var(--card-bg);
+  border-top: 1px solid var(--border);
+  box-shadow: 0 -2px 8px var(--shadow);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.nav-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 10px 0;
+  border: none;
+  background: none;
+  color: var(--text-subtle);
+  font-family: inherit;
+  font-size: 0.7rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.nav-btn:active {
+  transform: scale(0.97);
+}
+
+.nav-icon {
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+.nav-btn.active {
+  color: var(--primary);
+}
+
+#standings-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 12px;
+}
+
+.standings-group {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 12px 14px;
+  box-shadow: 0 1px 3px var(--shadow);
+}
+
+.standings-heading {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin: 0 0 8px;
+}
+
+.standings-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.standings-table th,
+.standings-table td {
+  padding: 6px 4px;
+  text-align: center;
+}
+
+.standings-table th {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--text-subtle);
+  border-bottom: 1px solid var(--border);
+}
+
+.standings-table tbody tr:not(:last-child) td {
+  border-bottom: 1px solid var(--border);
+}
+
+.standings-table .col-team {
+  text-align: left;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.standings-table .flag {
+  font-size: 1.1rem;
+}
+
+.standings-pos {
+  display: inline-block;
+  width: 1.2em;
+  color: var(--text-subtle);
+  font-weight: 400;
+}
+
+.standings-table .col-points {
+  font-weight: 800;
+  color: var(--primary);
+}
+
+.standings-table tr.sweden .col-team {
+  color: var(--accent);
 }
