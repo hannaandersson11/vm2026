@@ -25,6 +25,57 @@ const CITY_TIMEZONES = {
   "Vancouver": "America/Vancouver",
 };
 
+const TEAM_INFO = {
+  "Uruguay": { flag: "🇺🇾", name: "Uruguay" },
+  "Germany": { flag: "🇩🇪", name: "Tyskland" },
+  "Spain": { flag: "🇪🇸", name: "Spanien" },
+  "Paraguay": { flag: "🇵🇾", name: "Paraguay" },
+  "Argentina": { flag: "🇦🇷", name: "Argentina" },
+  "Ghana": { flag: "🇬🇭", name: "Ghana" },
+  "Brazil": { flag: "🇧🇷", name: "Brasilien" },
+  "Portugal": { flag: "🇵🇹", name: "Portugal" },
+  "Japan": { flag: "🇯🇵", name: "Japan" },
+  "Mexico": { flag: "🇲🇽", name: "Mexiko" },
+  "England": { flag: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", name: "England" },
+  "USA": { flag: "🇺🇸", name: "USA" },
+  "Korea Republic": { flag: "🇰🇷", name: "Sydkorea" },
+  "France": { flag: "🇫🇷", name: "Frankrike" },
+  "South Africa": { flag: "🇿🇦", name: "Sydafrika" },
+  "Algeria": { flag: "🇩🇿", name: "Algeriet" },
+  "Australia": { flag: "🇦🇺", name: "Australien" },
+  "New Zealand": { flag: "🇳🇿", name: "Nya Zeeland" },
+  "Switzerland": { flag: "🇨🇭", name: "Schweiz" },
+  "Ecuador": { flag: "🇪🇨", name: "Ecuador" },
+  "Sweden": { flag: "🇸🇪", name: "Sverige" },
+  "Czechia": { flag: "🇨🇿", name: "Tjeckien" },
+  "Croatia": { flag: "🇭🇷", name: "Kroatien" },
+  "Saudi Arabia": { flag: "🇸🇦", name: "Saudiarabien" },
+  "Tunisia": { flag: "🇹🇳", name: "Tunisien" },
+  "Turkey": { flag: "🇹🇷", name: "Turkiet" },
+  "Senegal": { flag: "🇸🇳", name: "Senegal" },
+  "Belgium": { flag: "🇧🇪", name: "Belgien" },
+  "Morocco": { flag: "🇲🇦", name: "Marocko" },
+  "Austria": { flag: "🇦🇹", name: "Österrike" },
+  "Colombia": { flag: "🇨🇴", name: "Colombia" },
+  "Egypt": { flag: "🇪🇬", name: "Egypten" },
+  "Canada": { flag: "🇨🇦", name: "Kanada" },
+  "Haiti": { flag: "🇭🇹", name: "Haiti" },
+  "Iran": { flag: "🇮🇷", name: "Iran" },
+  "Bosnia-H.": { flag: "🇧🇦", name: "Bosnien" },
+  "Panama": { flag: "🇵🇦", name: "Panama" },
+  "Cape Verde": { flag: "🇨🇻", name: "Kap Verde" },
+  "Congo DR": { flag: "🇨🇩", name: "DR Kongo" },
+  "Ivory Coast": { flag: "🇨🇮", name: "Elfenbenskusten" },
+  "Qatar": { flag: "🇶🇦", name: "Qatar" },
+  "Jordan": { flag: "🇯🇴", name: "Jordanien" },
+  "Iraq": { flag: "🇮🇶", name: "Irak" },
+  "Uzbekistan": { flag: "🇺🇿", name: "Uzbekistan" },
+  "Netherlands": { flag: "🇳🇱", name: "Nederländerna" },
+  "Norway": { flag: "🇳🇴", name: "Norge" },
+  "Scotland": { flag: "🏴󠁧󠁢󠁳󠁣󠁴󠁿", name: "Skottland" },
+  "Curaçao": { flag: "🇨🇼", name: "Curaçao" },
+};
+
 let liveScores = null;
 let scorers = null;
 
@@ -348,34 +399,36 @@ function renderStandings() {
   document.getElementById("standings-list").innerHTML = GROUPS.map((g) => standingsTable(g, standings[g])).join("");
 }
 
-function scorerRow(s, i) {
-  const crest = s.crest ? `<img class="team-crest" src="${s.crest}" alt="" loading="lazy">` : "";
-  const assists = s.assists ?? "–";
+function scorerRow(p, i, highlight) {
+  const info = TEAM_INFO[p.team] || { flag: "", name: p.team };
+  const flag = info.flag ? `<span class="flag">${info.flag}</span>` : "";
+  const assists = p.assists ?? "–";
+  const goalsClass = highlight === "goals" ? "col-points" : "";
+  const assistsClass = highlight === "assists" ? "col-points" : "";
   return `
     <tr>
       <td class="col-team">
-        <span class="standings-pos">${i + 1}</span>${crest}<span class="scorer-name">${s.player}<span class="scorer-team-name">${s.team}</span></span>
+        <span class="standings-pos">${i + 1}</span>${flag}<span class="scorer-name">${p.player}<span class="scorer-team-name">${info.name}</span></span>
       </td>
-      <td>${s.played}</td>
-      <td class="col-points">${s.goals}</td>
-      <td>${assists}</td>
+      <td>${p.played}</td>
+      <td class="${goalsClass}">${p.goals}</td>
+      <td class="${assistsClass}">${assists}</td>
     </tr>
   `;
 }
 
-function renderScorers() {
-  const list = document.getElementById("scorers-list");
-  if (scorers === null) {
-    list.innerHTML = `<p class="empty">Laddar skytteliga…</p>`;
-    return;
+function scorersTable(title, rows, highlight) {
+  if (rows.length === 0) {
+    return `
+      <div class="standings-group">
+        <h2 class="standings-heading">${title}</h2>
+        <p class="stats-empty">Ingen data ännu.</p>
+      </div>
+    `;
   }
-  if (scorers.length === 0) {
-    list.innerHTML = `<p class="empty">Ingen skyttedata ännu.</p>`;
-    return;
-  }
-  list.innerHTML = `
+  return `
     <div class="standings-group">
-      <h2 class="standings-heading">Skytteliga</h2>
+      <h2 class="standings-heading">${title}</h2>
       <table class="standings-table scorers-table">
         <thead>
           <tr>
@@ -386,11 +439,22 @@ function renderScorers() {
           </tr>
         </thead>
         <tbody>
-          ${scorers.map(scorerRow).join("")}
+          ${rows.map((p, i) => scorerRow(p, i, highlight)).join("")}
         </tbody>
       </table>
     </div>
   `;
+}
+
+function renderScorers() {
+  const list = document.getElementById("scorers-list");
+  if (scorers === null) {
+    list.innerHTML = `<p class="empty">Laddar statistik…</p>`;
+    return;
+  }
+  list.innerHTML =
+    scorersTable("Skytteliga", scorers.goals, "goals") +
+    scorersTable("Assistliga", scorers.assists, "assists");
 }
 
 function findTodayTarget() {
@@ -530,7 +594,7 @@ async function fetchScorers() {
     const res = await fetch(SCORERS_URL);
     if (!res.ok) return;
     const data = await res.json();
-    scorers = data.scorers;
+    scorers = { goals: data.scorers, assists: data.assists };
     if (!views.stats.hidden) renderScorers();
   } catch {
     // Ingen uppkoppling eller proxyn är otillgänglig.

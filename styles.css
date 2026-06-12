@@ -548,12 +548,8 @@ main {
   white-space: normal;
 }
 
-.team-crest {
-  width: 20px;
-  height: 20px;
-  object-fit: contain;
-  vertical-align: middle;
-  margin: 0 6px;
+.scorers-table .flag {
+  margin: 0 4px;
 }
 
 .scorer-name {
@@ -567,4 +563,15 @@ main {
   font-size: 0.7rem;
   color: var(--text-subtle);
   font-weight: 500;
+}
+
+.stats-empty {
+  text-align: center;
+  color: var(--text-subtle);
+  font-size: 0.85rem;
+  padding: 12px 0;
+}
+
+#scorers-list .standings-group:not(:last-child) {
+  margin-bottom: 12px;
 }
