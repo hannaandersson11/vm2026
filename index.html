@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VM 2026 – Matcher, tider &amp; TV-kanal</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="site-header">
+  <h1>⚽ VM 2026 – Alla matcher</h1>
+  <p class="subtitle">Datum, tid (svensk tid), TV-kanal (SVT/TV4) och spelplats för samtliga 104 matcher</p>
+</header>
+
+<main>
+  <section class="filters">
+    <div class="filter-group">
+      <label for="search">Sök lag</label>
+      <input type="text" id="search" placeholder="t.ex. Sverige">
+    </div>
+
+    <div class="filter-group">
+      <label for="channel">TV-kanal</label>
+      <select id="channel">
+        <option value="">Alla</option>
+        <option value="SVT">SVT</option>
+        <option value="TV4">TV4</option>
+        <option value="UNKNOWN">Ej bekräftad</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label for="stage">Skede</label>
+      <select id="stage">
+        <option value="">Alla</option>
+        <option value="Gruppspel">Gruppspel</option>
+        <option value="Sextondelsfinal">Sextondelsfinal</option>
+        <option value="Åttondelsfinal">Åttondelsfinal</option>
+        <option value="Kvartsfinal">Kvartsfinal</option>
+        <option value="Semifinal">Semifinal</option>
+        <option value="Bronsmatch">Bronsmatch</option>
+        <option value="Final">Final</option>
+      </select>
+    </div>
+
+    <div class="filter-group checkbox-group">
+      <label><input type="checkbox" id="sweden-only"> Endast Sveriges matcher</label>
+    </div>
+
+    <div class="filter-group checkbox-group">
+      <label><input type="checkbox" id="upcoming-only"> Endast kommande matcher</label>
+    </div>
+  </section>
+
+  <p class="result-count" id="result-count"></p>
+
+  <div id="match-list"></div>
+
+  <p class="legend">
+    <span class="badge badge-svt">SVT</span> och
+    <span class="badge badge-tv4">TV4</span> delar sändningsrättigheterna för VM 2026.
+    <span class="badge badge-unknown">Ej bekräftad</span> betyder att exakt kanal för den
+    matchen inte gick att bekräfta i nuläget – kolla TV-tablå närmare matchdagen.
+    Tider visas i svensk tid (CEST).
+  </p>
+</main>
+
+<script src="data/matches.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
