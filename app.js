@@ -4,6 +4,7 @@ const RELATIVE_DAY_LABELS = { "-1": "Igår", "0": "Idag", "1": "Imorgon" };
 const GROUPS = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"];
 const LIVE_DURATION_MS = 2.5 * 60 * 60 * 1000;
 const LIVE_SCORES_URL = "/api/scores";
+const SCORERS_URL = "/api/scorers";
 
 const CITY_TIMEZONES = {
   "Atlanta": "America/New_York",
@@ -25,6 +26,7 @@ const CITY_TIMEZONES = {
 };
 
 let liveScores = null;
+let scorers = null;
 
 function todayKey() {
   const d = new Date();
@@ -346,6 +348,51 @@ function renderStandings() {
   document.getElementById("standings-list").innerHTML = GROUPS.map((g) => standingsTable(g, standings[g])).join("");
 }
 
+function scorerRow(s, i) {
+  const crest = s.crest ? `<img class="team-crest" src="${s.crest}" alt="" loading="lazy">` : "";
+  const assists = s.assists ?? "–";
+  return `
+    <tr>
+      <td class="col-team">
+        <span class="standings-pos">${i + 1}</span>${crest}<span class="scorer-name">${s.player}<span class="scorer-team-name">${s.team}</span></span>
+      </td>
+      <td>${s.played}</td>
+      <td class="col-points">${s.goals}</td>
+      <td>${assists}</td>
+    </tr>
+  `;
+}
+
+function renderScorers() {
+  const list = document.getElementById("scorers-list");
+  if (scorers === null) {
+    list.innerHTML = `<p class="empty">Laddar skytteliga…</p>`;
+    return;
+  }
+  if (scorers.length === 0) {
+    list.innerHTML = `<p class="empty">Ingen skyttedata ännu.</p>`;
+    return;
+  }
+  list.innerHTML = `
+    <div class="standings-group">
+      <h2 class="standings-heading">Skytteliga</h2>
+      <table class="standings-table scorers-table">
+        <thead>
+          <tr>
+            <th class="col-team">Spelare</th>
+            <th>S</th>
+            <th>Mål</th>
+            <th>Assist</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${scorers.map(scorerRow).join("")}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
 function findTodayTarget() {
   const today = todayKey();
   const groups = document.querySelectorAll(".date-group");
@@ -437,6 +484,7 @@ document.getElementById("search").addEventListener("input", render);
 const views = {
   matches: document.getElementById("view-matches"),
   standings: document.getElementById("view-standings"),
+  stats: document.getElementById("view-stats"),
 };
 const navButtons = document.querySelectorAll(".nav-btn");
 const filtersSection = document.querySelector(".filters");
@@ -449,6 +497,11 @@ function setActiveView(view) {
   navButtons.forEach((btn) => btn.classList.toggle("active", btn.dataset.view === view));
   if (view === "standings") {
     renderStandings();
+    if (todayObserver) todayObserver.disconnect();
+    document.getElementById("today-fab").classList.remove("visible");
+  } else if (view === "stats") {
+    renderScorers();
+    if (scorers === null) fetchScorers();
     if (todayObserver) todayObserver.disconnect();
     document.getElementById("today-fab").classList.remove("visible");
   } else {
@@ -472,6 +525,18 @@ async function fetchLiveScores() {
   }
 }
 
+async function fetchScorers() {
+  try {
+    const res = await fetch(SCORERS_URL);
+    if (!res.ok) return;
+    const data = await res.json();
+    scorers = data.scorers;
+    if (!views.stats.hidden) renderScorers();
+  } catch {
+    // Ingen uppkoppling eller proxyn är otillgänglig.
+  }
+}
+
 render();
 setActiveView(localStorage.getItem("activeView") || "matches");
 scrollToToday();
@@ -482,6 +547,7 @@ setInterval(() => {
   if (document.visibilityState === "visible") {
     render();
     if (!views.standings.hidden) renderStandings();
+    if (!views.stats.hidden) fetchScorers();
     fetchLiveScores();
   }
 }, 60000);

@@ -98,6 +98,15 @@
       (t.ex. inbördes möte och fair play) tillämpas inte här.
     </p>
   </section>
+
+  <section id="view-stats" class="view" hidden>
+    <div id="scorers-list"></div>
+    <p class="legend">
+      Skytteligan visar de 20 spelare med flest mål i VM 2026, hämtat från
+      football-data.org. Listan fylls på efter hand som matcher spelas och
+      uppdateras automatiskt.
+    </p>
+  </section>
 </main>
 
 <button type="button" id="today-fab" class="today-fab">Idag</button>
@@ -105,6 +114,7 @@
 <nav class="bottom-nav">
   <button type="button" class="nav-btn active" data-view="matches">Matcher</button>
   <button type="button" class="nav-btn" data-view="standings">Tabeller</button>
+  <button type="button" class="nav-btn" data-view="stats">Statistik</button>
 </nav>
 
 <script src="data/matches.js"></script>
