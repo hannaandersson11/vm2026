@@ -136,3 +136,12 @@ document.getElementById("search").addEventListener("input", render);
 
 render();
 scrollToToday();
+
+let wasHidden = false;
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "hidden") {
+    wasHidden = true;
+  } else if (document.visibilityState === "visible" && wasHidden) {
+    location.reload();
+  }
+});
