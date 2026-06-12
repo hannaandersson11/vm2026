@@ -400,11 +400,13 @@ const views = {
   standings: document.getElementById("view-standings"),
 };
 const navButtons = document.querySelectorAll(".nav-btn");
+const filtersSection = document.querySelector(".filters");
 
 function setActiveView(view) {
   for (const [name, el] of Object.entries(views)) {
     el.hidden = name !== view;
   }
+  filtersSection.hidden = view !== "matches";
   navButtons.forEach((btn) => btn.classList.toggle("active", btn.dataset.view === view));
   if (view === "standings") {
     renderStandings();
