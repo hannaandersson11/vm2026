@@ -1,7 +1,7 @@
 :root {
   --primary: #52525b;
   --accent: #b8540a;
-  --svt: #1e4ed8;
+  --svt: #0e8a4d;
   --tv4: #e2231a;
   --grey: #9aa0a6;
   --bg: #f5f6f4;
@@ -19,7 +19,7 @@
 [data-theme="dark"] {
   --primary: #a1a1aa;
   --accent: #e8740a;
-  --svt: #6f96f5;
+  --svt: #22c55e;
   --tv4: #ff6b61;
   --grey: #888d93;
   --bg: #14181a;
