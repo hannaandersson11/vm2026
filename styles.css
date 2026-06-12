@@ -242,6 +242,13 @@ main {
   color: var(--text-muted);
 }
 
+.time-block {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  line-height: 1.2;
+}
+
 .match-header .time {
   font-weight: 700;
   font-size: 1rem;
@@ -251,9 +258,6 @@ main {
 .local-time {
   font-size: 0.7rem;
   color: var(--text-subtle);
-  background: var(--chip-bg);
-  padding: 2px 8px;
-  border-radius: 999px;
   font-weight: 600;
   white-space: nowrap;
 }
