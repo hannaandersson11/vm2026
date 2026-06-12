@@ -1,5 +1,5 @@
 :root {
-  --primary: #1f7a4c;
+  --primary: #52525b;
   --accent: #b8540a;
   --svt: #1e4ed8;
   --tv4: #e2231a;
@@ -17,7 +17,7 @@
 }
 
 [data-theme="dark"] {
-  --primary: #4ade80;
+  --primary: #a1a1aa;
   --accent: #e8740a;
   --svt: #6f96f5;
   --tv4: #ff6b61;
@@ -104,8 +104,8 @@ main {
 }
 
 .filter-count {
-  background: var(--primary);
-  color: #fff;
+  background: var(--text);
+  color: var(--bg);
   border-radius: 999px;
   font-size: 0.7rem;
   padding: 1px 6px;
@@ -249,8 +249,8 @@ main {
 }
 
 .today-badge {
-  background: var(--primary);
-  color: #fff;
+  background: var(--text);
+  color: var(--bg);
   font-size: 0.7rem;
   padding: 2px 6px;
   border-radius: 4px;
@@ -405,8 +405,8 @@ main {
   padding: 10px 16px;
   border: none;
   border-radius: 999px;
-  background: var(--primary);
-  color: #fff;
+  background: var(--text);
+  color: var(--bg);
   font-size: 0.9rem;
   font-weight: 700;
   font-family: inherit;

@@ -367,7 +367,7 @@ document.getElementById("reset-filters").addEventListener("click", () => {
 });
 
 // Dark mode toggle, persisted in localStorage (falls back to system preference)
-const THEME_COLORS = { light: "#1f7a4c", dark: "#14181a" };
+const THEME_COLORS = { light: "#f5f6f4", dark: "#14181a" };
 const themeToggle = document.getElementById("theme-toggle");
 const themeIcon = themeToggle.querySelector("span");
 const metaThemeColor = document.querySelector('meta[name="theme-color"]');

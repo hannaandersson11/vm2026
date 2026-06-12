@@ -52,8 +52,8 @@ module.exports = async (req, res) => {
     for (const m of data.matches) {
       matches[m.id] = {
         status: m.status,
-        home: m.score?.fullTime?.home ?? null,
-        away: m.score?.fullTime?.away ?? null,
+        home: m.score?.fullTime?.home ?? 0,
+        away: m.score?.fullTime?.away ?? 0,
       };
     }
 
