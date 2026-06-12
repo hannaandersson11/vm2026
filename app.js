@@ -5,6 +5,25 @@ const GROUPS = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"];
 const LIVE_DURATION_MS = 2.5 * 60 * 60 * 1000;
 const LIVE_SCORES_URL = "/api/scores";
 
+const CITY_TIMEZONES = {
+  "Atlanta": "America/New_York",
+  "Boston": "America/New_York",
+  "Dallas": "America/Chicago",
+  "Guadalajara": "America/Mexico_City",
+  "Houston": "America/Chicago",
+  "Kansas City": "America/Chicago",
+  "Los Angeles": "America/Los_Angeles",
+  "Mexico City": "America/Mexico_City",
+  "Miami": "America/New_York",
+  "Monterrey": "America/Monterrey",
+  "New York/New Jersey": "America/New_York",
+  "Philadelphia": "America/New_York",
+  "San Francisco Bay Area": "America/Los_Angeles",
+  "Seattle": "America/Los_Angeles",
+  "Toronto": "America/Toronto",
+  "Vancouver": "America/Vancouver",
+};
+
 let liveScores = null;
 
 function todayKey() {
@@ -33,6 +52,18 @@ function channelBadge(channel) {
   return `<span class="badge badge-unknown">Ej bekräftad</span>`;
 }
 
+function localTimeLabel(match) {
+  const timeZone = CITY_TIMEZONES[match.city];
+  if (!timeZone) return "";
+
+  const d = new Date(match.datetime);
+  const time = new Intl.DateTimeFormat("sv-SE", { hour: "2-digit", minute: "2-digit", hour12: false, timeZone }).format(d);
+  const localDate = new Intl.DateTimeFormat("en-CA", { timeZone }).format(d);
+  const dayBefore = localDate < match.date ? " (dagen innan)" : "";
+
+  return `<span class="local-time">${time} lokal tid${dayBefore}</span>`;
+}
+
 function getMatchState(match, now) {
   let home = match.homeScore;
   let away = match.awayScore;
@@ -58,6 +89,11 @@ function getMatchState(match, now) {
   if (!isLive && !isFinished && !suppressLive) {
     const start = new Date(match.datetime);
     isLive = now >= start && now - start <= LIVE_DURATION_MS;
+  }
+
+  if (isLive) {
+    if (home === null) home = 0;
+    if (away === null) away = 0;
   }
 
   return { home, away, isFinished, isLive };
@@ -108,6 +144,7 @@ function matchCard(match, now) {
     <div class="${classes.join(" ")}">
       <div class="match-header">
         <span class="time">${match.time}</span>
+        ${localTimeLabel(match)}
         ${statusBadge}
         <span class="stage-badge">${stageLabel(match)}</span>
       </div>

@@ -248,6 +248,16 @@ main {
   color: var(--text);
 }
 
+.local-time {
+  font-size: 0.7rem;
+  color: var(--text-subtle);
+  background: var(--chip-bg);
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
 .today-badge {
   background: var(--text);
   color: var(--bg);
