@@ -157,8 +157,14 @@ main {
   gap: 6px;
 }
 
+.team.home {
+  text-align: left;
+}
+
 .team.away {
   flex-direction: row-reverse;
+  justify-content: flex-end;
+  text-align: right;
 }
 
 .flag {
