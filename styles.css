@@ -1,5 +1,5 @@
 :root {
-  --green: #0b3d2e;
+  --accent: #b8540a;
   --gold: #f4c542;
   --svt: #1e4ed8;
   --tv4: #e2231a;
@@ -17,7 +17,7 @@
 }
 
 [data-theme="dark"] {
-  --green: #34a37a;
+  --accent: #e8740a;
   --gold: #f4c542;
   --svt: #6f96f5;
   --tv4: #ff6b61;
@@ -103,7 +103,7 @@ main {
 }
 
 .filter-count {
-  background: var(--green);
+  background: var(--accent);
   color: #fff;
   border-radius: 999px;
   font-size: 0.7rem;
@@ -183,7 +183,7 @@ main {
 
 .date-heading {
   font-size: 1rem;
-  color: var(--green);
+  color: var(--accent);
   border-bottom: 2px solid var(--gold);
   padding: 8px 0 4px;
   margin: 18px 0 10px;
@@ -221,7 +221,7 @@ main {
 }
 
 .match-card.today {
-  border-left-color: var(--green);
+  border-left-color: var(--accent);
 }
 
 .match-card.live {
@@ -247,7 +247,7 @@ main {
 }
 
 .today-badge {
-  background: var(--green);
+  background: var(--accent);
   color: #fff;
   font-size: 0.7rem;
   padding: 2px 6px;
@@ -308,13 +308,13 @@ main {
 }
 
 .team.home {
-  text-align: left;
+  justify-content: flex-end;
+  text-align: right;
 }
 
 .team.away {
-  flex-direction: row-reverse;
-  justify-content: flex-end;
-  text-align: right;
+  justify-content: flex-start;
+  text-align: left;
 }
 
 .flag {
@@ -329,7 +329,7 @@ main {
 .score {
   font-weight: 800;
   font-size: 1.1rem;
-  color: var(--green);
+  color: var(--accent);
 }
 
 .match-venue {
@@ -393,7 +393,7 @@ main {
   padding: 10px 16px;
   border: none;
   border-radius: 999px;
-  background: var(--green);
+  background: var(--accent);
   color: #fff;
   font-size: 0.9rem;
   font-weight: 700;
