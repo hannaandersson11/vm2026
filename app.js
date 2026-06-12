@@ -161,7 +161,7 @@ function matchCard(match, now) {
         </div>
       </div>
       <div class="match-footer">
-        <span class="match-venue">📍 ${match.venue}, ${match.city}, ${match.country}</span>
+        <span class="match-venue">${match.venue}, ${match.city}, ${match.country}</span>
         ${channelBadge(match.channel)}
       </div>
     </div>
