@@ -33,7 +33,7 @@ const MATCHES = [
     "venue": "Estadio Akron",
     "city": "Guadalajara",
     "country": "Mexiko",
-    "channel": null,
+    "channel": "TV4",
     "homeScore": 2,
     "awayScore": 1
   },
@@ -52,7 +52,7 @@ const MATCHES = [
     "venue": "BMO Field",
     "city": "Toronto",
     "country": "Kanada",
-    "channel": null,
+    "channel": "SVT",
     "homeScore": null,
     "awayScore": null
   },
@@ -71,7 +71,7 @@ const MATCHES = [
     "venue": "SoFi Stadium",
     "city": "Los Angeles",
     "country": "USA",
-    "channel": null,
+    "channel": "TV4",
     "homeScore": null,
     "awayScore": null
   },
@@ -90,7 +90,7 @@ const MATCHES = [
     "venue": "Levi's Stadium",
     "city": "San Francisco Bay Area",
     "country": "USA",
-    "channel": null,
+    "channel": "TV4",
     "homeScore": null,
     "awayScore": null
   },
@@ -109,7 +109,7 @@ const MATCHES = [
     "venue": "MetLife Stadium",
     "city": "New York/New Jersey",
     "country": "USA",
-    "channel": null,
+    "channel": "SVT",
     "homeScore": null,
     "awayScore": null
   },
@@ -128,7 +128,7 @@ const MATCHES = [
     "venue": "Gillette Stadium",
     "city": "Boston",
     "country": "USA",
-    "channel": null,
+    "channel": "SVT",
     "homeScore": null,
     "awayScore": null
   },
@@ -147,7 +147,7 @@ const MATCHES = [
     "venue": "BC Place",
     "city": "Vancouver",
     "country": "Kanada",
-    "channel": null,
+    "channel": "TV4",
     "homeScore": null,
     "awayScore": null
   },
@@ -166,7 +166,7 @@ const MATCHES = [
     "venue": "NRG Stadium",
     "city": "Houston",
     "country": "USA",
-    "channel": null,
+    "channel": "TV4",
     "homeScore": null,
     "awayScore": null
   },
@@ -185,7 +185,7 @@ const MATCHES = [
     "venue": "AT&T Stadium",
     "city": "Dallas",
     "country": "USA",
-    "channel": null,
+    "channel": "TV4",
     "homeScore": null,
     "awayScore": null
   },
@@ -204,7 +204,7 @@ const MATCHES = [
     "venue": "Lincoln Financial Field",
     "city": "Philadelphia",
     "country": "USA",
-    "channel": null,
+    "channel": "TV4",
     "homeScore": null,
     "awayScore": null
   },
@@ -242,7 +242,7 @@ const MATCHES = [
     "venue": "Mercedes-Benz Stadium",
     "city": "Atlanta",
     "country": "USA",
-    "channel": null,
+    "channel": "SVT",
     "homeScore": null,
     "awayScore": null
   },
@@ -261,7 +261,7 @@ const MATCHES = [
     "venue": "Lumen Field",
     "city": "Seattle",
     "country": "USA",
-    "channel": null,
+    "channel": "SVT",
     "homeScore": null,
     "awayScore": null
   },
@@ -280,7 +280,7 @@ const MATCHES = [
     "venue": "Hard Rock Stadium",
     "city": "Miami",
     "country": "USA",
-    "channel": null,
+    "channel": "TV4",
     "homeScore": null,
     "awayScore": null
   },
@@ -299,7 +299,7 @@ const MATCHES = [
     "venue": "SoFi Stadium",
     "city": "Los Angeles",
     "country": "USA",
-    "channel": null,
+    "channel": "TV4",
     "homeScore": null,
     "awayScore": null
   },
@@ -318,7 +318,7 @@ const MATCHES = [
     "venue": "MetLife Stadium",
     "city": "New York/New Jersey",
     "country": "USA",
-    "channel": null,
+    "channel": "SVT",
     "homeScore": null,
     "awayScore": null
   },
@@ -337,7 +337,7 @@ const MATCHES = [
     "venue": "Gillette Stadium",
     "city": "Boston",
     "country": "USA",
-    "channel": null,
+    "channel": "TV4",
     "homeScore": null,
     "awayScore": null
   },
@@ -356,7 +356,7 @@ const MATCHES = [
     "venue": "Arrowhead Stadium",
     "city": "Kansas City",
     "country": "USA",
-    "channel": null,
+    "channel": "TV4",
     "homeScore": null,
     "awayScore": null
   },
@@ -375,7 +375,7 @@ const MATCHES = [
     "venue": "Levi's Stadium",
     "city": "San Francisco Bay Area",
     "country": "USA",
-    "channel": null,
+    "channel": "TV4",
     "homeScore": null,
     "awayScore": null
   },
@@ -388,13 +388,13 @@ const MATCHES = [
     "group": "K",
     "matchday": 1,
     "home": "Portugal",
-    "away": "Kongo-Kinshasa",
+    "away": "DR Kongo",
     "homeFlag": "🇵🇹",
     "awayFlag": "🇨🇩",
     "venue": "NRG Stadium",
     "city": "Houston",
     "country": "USA",
-    "channel": null,
+    "channel": "TV4",
     "homeScore": null,
     "awayScore": null
   },
@@ -413,7 +413,7 @@ const MATCHES = [
     "venue": "AT&T Stadium",
     "city": "Dallas",
     "country": "USA",
-    "channel": null,
+    "channel": "TV4",
     "homeScore": null,
     "awayScore": null
   },
@@ -432,7 +432,7 @@ const MATCHES = [
     "venue": "BMO Field",
     "city": "Toronto",
     "country": "Kanada",
-    "channel": null,
+    "channel": "TV4",
     "homeScore": null,
     "awayScore": null
   },
@@ -451,7 +451,7 @@ const MATCHES = [
     "venue": "Estadio Azteca",
     "city": "Mexico City",
     "country": "Mexiko",
-    "channel": null,
+    "channel": "TV4",
     "homeScore": null,
     "awayScore": null
   },
@@ -470,7 +470,7 @@ const MATCHES = [
     "venue": "Mercedes-Benz Stadium",
     "city": "Atlanta",
     "country": "USA",
-    "channel": null,
+    "channel": "TV4",
     "homeScore": null,
     "awayScore": null
   },
@@ -489,7 +489,7 @@ const MATCHES = [
     "venue": "SoFi Stadium",
     "city": "Los Angeles",
     "country": "USA",
-    "channel": null,
+    "channel": "TV4",
     "homeScore": null,
     "awayScore": null
   },
@@ -508,7 +508,7 @@ const MATCHES = [
     "venue": "BC Place",
     "city": "Vancouver",
     "country": "Kanada",
-    "channel": null,
+    "channel": "TV4",
     "homeScore": null,
     "awayScore": null
   },
@@ -527,7 +527,7 @@ const MATCHES = [
     "venue": "Estadio Akron",
     "city": "Guadalajara",
     "country": "Mexiko",
-    "channel": null,
+    "channel": "TV4",
     "homeScore": null,
     "awayScore": null
   },
@@ -546,7 +546,7 @@ const MATCHES = [
     "venue": "Lumen Field",
     "city": "Seattle",
     "country": "USA",
-    "channel": null,
+    "channel": "SVT",
     "homeScore": null,
     "awayScore": null
   },
@@ -565,15 +565,15 @@ const MATCHES = [
     "venue": "Gillette Stadium",
     "city": "Boston",
     "country": "USA",
-    "channel": null,
+    "channel": "SVT",
     "homeScore": null,
     "awayScore": null
   },
   {
     "id": 29,
     "date": "2026-06-20",
-    "time": "03:00",
-    "datetime": "2026-06-20T03:00:00+02:00",
+    "time": "02:30",
+    "datetime": "2026-06-20T02:30:00+02:00",
     "stage": "Gruppspel",
     "group": "C",
     "matchday": 2,
@@ -584,15 +584,15 @@ const MATCHES = [
     "venue": "Lincoln Financial Field",
     "city": "Philadelphia",
     "country": "USA",
-    "channel": null,
+    "channel": "TV4",
     "homeScore": null,
     "awayScore": null
   },
   {
     "id": 31,
     "date": "2026-06-20",
-    "time": "06:00",
-    "datetime": "2026-06-20T06:00:00+02:00",
+    "time": "05:00",
+    "datetime": "2026-06-20T05:00:00+02:00",
     "stage": "Gruppspel",
     "group": "D",
     "matchday": 2,
@@ -603,7 +603,7 @@ const MATCHES = [
     "venue": "Levi's Stadium",
     "city": "San Francisco Bay Area",
     "country": "USA",
-    "channel": null,
+    "channel": "TV4",
     "homeScore": null,
     "awayScore": null
   },
@@ -641,7 +641,7 @@ const MATCHES = [
     "venue": "BMO Field",
     "city": "Toronto",
     "country": "Kanada",
-    "channel": null,
+    "channel": "TV4",
     "homeScore": null,
     "awayScore": null
   },
@@ -660,7 +660,7 @@ const MATCHES = [
     "venue": "Arrowhead Stadium",
     "city": "Kansas City",
     "country": "USA",
-    "channel": null,
+    "channel": "TV4",
     "homeScore": null,
     "awayScore": null
   },
@@ -679,7 +679,7 @@ const MATCHES = [
     "venue": "Estadio BBVA",
     "city": "Monterrey",
     "country": "Mexiko",
-    "channel": null,
+    "channel": "SVT",
     "homeScore": null,
     "awayScore": null
   },
@@ -698,7 +698,7 @@ const MATCHES = [
     "venue": "Mercedes-Benz Stadium",
     "city": "Atlanta",
     "country": "USA",
-    "channel": null,
+    "channel": "TV4",
     "homeScore": null,
     "awayScore": null
   },
@@ -717,7 +717,7 @@ const MATCHES = [
     "venue": "SoFi Stadium",
     "city": "Los Angeles",
     "country": "USA",
-    "channel": null,
+    "channel": "TV4",
     "homeScore": null,
     "awayScore": null
   },
@@ -736,7 +736,7 @@ const MATCHES = [
     "venue": "Hard Rock Stadium",
     "city": "Miami",
     "country": "USA",
-    "channel": null,
+    "channel": "TV4",
     "homeScore": null,
     "awayScore": null
   },
@@ -755,7 +755,7 @@ const MATCHES = [
     "venue": "BC Place",
     "city": "Vancouver",
     "country": "Kanada",
-    "channel": null,
+    "channel": "TV4",
     "homeScore": null,
     "awayScore": null
   },
@@ -774,7 +774,7 @@ const MATCHES = [
     "venue": "AT&T Stadium",
     "city": "Dallas",
     "country": "USA",
-    "channel": null,
+    "channel": "SVT",
     "homeScore": null,
     "awayScore": null
   },
@@ -793,7 +793,7 @@ const MATCHES = [
     "venue": "Lincoln Financial Field",
     "city": "Philadelphia",
     "country": "USA",
-    "channel": null,
+    "channel": "SVT",
     "homeScore": null,
     "awayScore": null
   },
@@ -812,7 +812,7 @@ const MATCHES = [
     "venue": "MetLife Stadium",
     "city": "New York/New Jersey",
     "country": "USA",
-    "channel": null,
+    "channel": "SVT",
     "homeScore": null,
     "awayScore": null
   },
@@ -831,7 +831,7 @@ const MATCHES = [
     "venue": "Levi's Stadium",
     "city": "San Francisco Bay Area",
     "country": "USA",
-    "channel": null,
+    "channel": "TV4",
     "homeScore": null,
     "awayScore": null
   },
@@ -850,7 +850,7 @@ const MATCHES = [
     "venue": "NRG Stadium",
     "city": "Houston",
     "country": "USA",
-    "channel": null,
+    "channel": "SVT",
     "homeScore": null,
     "awayScore": null
   },
@@ -869,7 +869,7 @@ const MATCHES = [
     "venue": "Gillette Stadium",
     "city": "Boston",
     "country": "USA",
-    "channel": null,
+    "channel": "SVT",
     "homeScore": null,
     "awayScore": null
   },
@@ -888,7 +888,7 @@ const MATCHES = [
     "venue": "BMO Field",
     "city": "Toronto",
     "country": "Kanada",
-    "channel": null,
+    "channel": "TV4",
     "homeScore": null,
     "awayScore": null
   },
@@ -901,13 +901,13 @@ const MATCHES = [
     "group": "K",
     "matchday": 2,
     "home": "Colombia",
-    "away": "Kongo-Kinshasa",
+    "away": "DR Kongo",
     "homeFlag": "🇨🇴",
     "awayFlag": "🇨🇩",
     "venue": "Estadio Akron",
     "city": "Guadalajara",
     "country": "Mexiko",
-    "channel": null,
+    "channel": "TV4",
     "homeScore": null,
     "awayScore": null
   },
@@ -926,7 +926,7 @@ const MATCHES = [
     "venue": "BC Place",
     "city": "Vancouver",
     "country": "Kanada",
-    "channel": null,
+    "channel": "TV4",
     "homeScore": null,
     "awayScore": null
   },
@@ -945,7 +945,7 @@ const MATCHES = [
     "venue": "Lumen Field",
     "city": "Seattle",
     "country": "USA",
-    "channel": null,
+    "channel": "TV4",
     "homeScore": null,
     "awayScore": null
   },
@@ -964,7 +964,7 @@ const MATCHES = [
     "venue": "Hard Rock Stadium",
     "city": "Miami",
     "country": "USA",
-    "channel": null,
+    "channel": "TV4",
     "homeScore": null,
     "awayScore": null
   },
@@ -983,7 +983,7 @@ const MATCHES = [
     "venue": "Mercedes-Benz Stadium",
     "city": "Atlanta",
     "country": "USA",
-    "channel": null,
+    "channel": "TV4",
     "homeScore": null,
     "awayScore": null
   },
@@ -1002,7 +1002,7 @@ const MATCHES = [
     "venue": "Estadio Azteca",
     "city": "Mexico City",
     "country": "Mexiko",
-    "channel": null,
+    "channel": "SVT",
     "homeScore": null,
     "awayScore": null
   },
@@ -1021,7 +1021,7 @@ const MATCHES = [
     "venue": "Estadio BBVA",
     "city": "Monterrey",
     "country": "Mexiko",
-    "channel": null,
+    "channel": "SVT",
     "homeScore": null,
     "awayScore": null
   },
@@ -1040,7 +1040,7 @@ const MATCHES = [
     "venue": "Lincoln Financial Field",
     "city": "Philadelphia",
     "country": "USA",
-    "channel": null,
+    "channel": "SVT",
     "homeScore": null,
     "awayScore": null
   },
@@ -1059,7 +1059,7 @@ const MATCHES = [
     "venue": "MetLife Stadium",
     "city": "New York/New Jersey",
     "country": "USA",
-    "channel": null,
+    "channel": "SVT",
     "homeScore": null,
     "awayScore": null
   },
@@ -1097,7 +1097,7 @@ const MATCHES = [
     "venue": "Arrowhead Stadium",
     "city": "Kansas City",
     "country": "USA",
-    "channel": null,
+    "channel": "SVT",
     "homeScore": null,
     "awayScore": null
   },
@@ -1116,7 +1116,7 @@ const MATCHES = [
     "venue": "SoFi Stadium",
     "city": "Los Angeles",
     "country": "USA",
-    "channel": null,
+    "channel": "TV4",
     "homeScore": null,
     "awayScore": null
   },
@@ -1135,7 +1135,7 @@ const MATCHES = [
     "venue": "Levi's Stadium",
     "city": "San Francisco Bay Area",
     "country": "USA",
-    "channel": null,
+    "channel": "TV4",
     "homeScore": null,
     "awayScore": null
   },
@@ -1154,7 +1154,7 @@ const MATCHES = [
     "venue": "Gillette Stadium",
     "city": "Boston",
     "country": "USA",
-    "channel": null,
+    "channel": "TV4",
     "homeScore": null,
     "awayScore": null
   },
@@ -1173,7 +1173,7 @@ const MATCHES = [
     "venue": "BMO Field",
     "city": "Toronto",
     "country": "Kanada",
-    "channel": null,
+    "channel": "TV4",
     "homeScore": null,
     "awayScore": null
   },
@@ -1192,7 +1192,7 @@ const MATCHES = [
     "venue": "NRG Stadium",
     "city": "Houston",
     "country": "USA",
-    "channel": null,
+    "channel": "TV4",
     "homeScore": null,
     "awayScore": null
   },
@@ -1211,7 +1211,7 @@ const MATCHES = [
     "venue": "Estadio Akron",
     "city": "Guadalajara",
     "country": "Mexiko",
-    "channel": null,
+    "channel": "TV4",
     "homeScore": null,
     "awayScore": null
   },
@@ -1230,7 +1230,7 @@ const MATCHES = [
     "venue": "Lumen Field",
     "city": "Seattle",
     "country": "USA",
-    "channel": null,
+    "channel": "TV4",
     "homeScore": null,
     "awayScore": null
   },
@@ -1249,7 +1249,7 @@ const MATCHES = [
     "venue": "BC Place",
     "city": "Vancouver",
     "country": "Kanada",
-    "channel": null,
+    "channel": "TV4",
     "homeScore": null,
     "awayScore": null
   },
@@ -1268,7 +1268,7 @@ const MATCHES = [
     "venue": "MetLife Stadium",
     "city": "New York/New Jersey",
     "country": "USA",
-    "channel": null,
+    "channel": "SVT",
     "homeScore": null,
     "awayScore": null
   },
@@ -1287,7 +1287,7 @@ const MATCHES = [
     "venue": "Lincoln Financial Field",
     "city": "Philadelphia",
     "country": "USA",
-    "channel": null,
+    "channel": "SVT",
     "homeScore": null,
     "awayScore": null
   },
@@ -1306,7 +1306,7 @@ const MATCHES = [
     "venue": "Hard Rock Stadium",
     "city": "Miami",
     "country": "USA",
-    "channel": null,
+    "channel": "TV4",
     "homeScore": null,
     "awayScore": null
   },
@@ -1318,14 +1318,14 @@ const MATCHES = [
     "stage": "Gruppspel",
     "group": "K",
     "matchday": 3,
-    "home": "Kongo-Kinshasa",
+    "home": "DR Kongo",
     "away": "Uzbekistan",
     "homeFlag": "🇨🇩",
     "awayFlag": "🇺🇿",
     "venue": "Mercedes-Benz Stadium",
     "city": "Atlanta",
     "country": "USA",
-    "channel": null,
+    "channel": "TV4",
     "homeScore": null,
     "awayScore": null
   },
@@ -1344,7 +1344,7 @@ const MATCHES = [
     "venue": "Arrowhead Stadium",
     "city": "Kansas City",
     "country": "USA",
-    "channel": null,
+    "channel": "TV4",
     "homeScore": null,
     "awayScore": null
   },
@@ -1363,7 +1363,7 @@ const MATCHES = [
     "venue": "AT&T Stadium",
     "city": "Dallas",
     "country": "USA",
-    "channel": null,
+    "channel": "TV4",
     "homeScore": null,
     "awayScore": null
   },

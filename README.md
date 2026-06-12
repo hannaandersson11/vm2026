@@ -43,8 +43,8 @@ JavaScript-array (`MATCHES`). Varje match har fälten:
 
 ### Om TV-kanal
 
-Sändningsrätten delas mellan SVT och TV4. Vid det här tillfället gick det
-bara att bekräfta kanal för öppningsmatchen, Sveriges tre gruppspelsmatcher
-samt finalen. Övriga matcher har `channel: null` och visas som
-"Ej bekräftad" i appen. Uppdatera fältet i `data/matches.js` när TV-tablån
-bekräftas för fler matcher.
+Sändningsrätten delas mellan SVT och TV4. Samtliga 72 gruppspelsmatcher har
+bekräftad kanal. För slutspelet (sextondelsfinal t.o.m. semifinal) är kanalen
+ännu inte bekräftad och dessa matcher har `channel: null` och visas som
+"Ej bekräftad" i appen. Bronsmatchen och finalen är förhandstippade till TV4.
+Uppdatera fältet i `data/matches.js` när TV-tablån bekräftas för fler matcher.
