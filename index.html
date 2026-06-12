@@ -12,45 +12,67 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="VM 2026">
+<script>
+  (function () {
+    var stored = localStorage.getItem("theme");
+    var theme = stored || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    document.documentElement.setAttribute("data-theme", theme);
+  })();
+</script>
 </head>
 <body>
 <main>
   <section class="filters">
-    <div class="filter-group">
-      <label for="search">Sök lag</label>
-      <input type="text" id="search" placeholder="t.ex. Sverige">
+    <div class="filters-toolbar">
+      <button type="button" id="filters-toggle" class="icon-btn" aria-expanded="false" aria-controls="filters-body">
+        <span aria-hidden="true">🔍</span> Filter
+        <span class="filter-count" id="filter-count" hidden>0</span>
+        <span class="chevron" aria-hidden="true">▾</span>
+      </button>
+      <button type="button" id="theme-toggle" class="icon-btn icon-btn-round" aria-label="Växla till mörkt läge">
+        <span aria-hidden="true">🌙</span>
+      </button>
     </div>
 
-    <div class="filter-group">
-      <label for="channel">TV-kanal</label>
-      <select id="channel">
-        <option value="">Alla</option>
-        <option value="SVT">SVT</option>
-        <option value="TV4">TV4</option>
-        <option value="UNKNOWN">Ej bekräftad</option>
-      </select>
-    </div>
+    <div class="filters-body" id="filters-body" hidden>
+      <div class="filter-group">
+        <label for="search">Sök lag, stad eller arena</label>
+        <input type="text" id="search" placeholder="t.ex. Sverige eller Houston">
+      </div>
 
-    <div class="filter-group">
-      <label for="stage">Skede</label>
-      <select id="stage">
-        <option value="">Alla</option>
-        <option value="Gruppspel">Gruppspel</option>
-        <option value="Sextondelsfinal">Sextondelsfinal</option>
-        <option value="Åttondelsfinal">Åttondelsfinal</option>
-        <option value="Kvartsfinal">Kvartsfinal</option>
-        <option value="Semifinal">Semifinal</option>
-        <option value="Bronsmatch">Bronsmatch</option>
-        <option value="Final">Final</option>
-      </select>
-    </div>
+      <div class="filter-group">
+        <label for="channel">TV-kanal</label>
+        <select id="channel">
+          <option value="">Alla</option>
+          <option value="SVT">SVT</option>
+          <option value="TV4">TV4</option>
+          <option value="UNKNOWN">Ej bekräftad</option>
+        </select>
+      </div>
 
-    <div class="filter-group checkbox-group">
-      <label><input type="checkbox" id="sweden-only"> Endast Sveriges matcher</label>
-    </div>
+      <div class="filter-group">
+        <label for="stage">Skede</label>
+        <select id="stage">
+          <option value="">Alla</option>
+          <option value="Gruppspel">Gruppspel</option>
+          <option value="Sextondelsfinal">Sextondelsfinal</option>
+          <option value="Åttondelsfinal">Åttondelsfinal</option>
+          <option value="Kvartsfinal">Kvartsfinal</option>
+          <option value="Semifinal">Semifinal</option>
+          <option value="Bronsmatch">Bronsmatch</option>
+          <option value="Final">Final</option>
+        </select>
+      </div>
 
-    <div class="filter-group checkbox-group">
-      <label><input type="checkbox" id="upcoming-only"> Endast kommande matcher</label>
+      <div class="filter-group checkbox-group">
+        <label><input type="checkbox" id="sweden-only"> Endast Sveriges matcher</label>
+      </div>
+
+      <div class="filter-group checkbox-group">
+        <label><input type="checkbox" id="upcoming-only"> Endast kommande matcher</label>
+      </div>
+
+      <button type="button" id="reset-filters" class="reset-btn" hidden>Rensa filter</button>
     </div>
   </section>
 
@@ -66,6 +88,8 @@
     Tider visas i svensk tid (CEST).
   </p>
 </main>
+
+<button type="button" id="today-fab" class="today-fab">📍 Idag</button>
 
 <script src="data/matches.js"></script>
 <script src="app.js"></script>

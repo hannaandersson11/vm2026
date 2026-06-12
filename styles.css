@@ -7,6 +7,31 @@
   --bg: #f5f6f4;
   --card-bg: #ffffff;
   --text: #1c1c1c;
+  --text-muted: #666;
+  --text-subtle: #888;
+  --border: #ccc;
+  --chip-bg: #eef1ef;
+  --sweden-bg: #fffdf3;
+  --shadow: rgba(0, 0, 0, 0.06);
+  --shadow-strong: rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="dark"] {
+  --green: #34a37a;
+  --gold: #f4c542;
+  --svt: #6f96f5;
+  --tv4: #ff6b61;
+  --grey: #888d93;
+  --bg: #14181a;
+  --card-bg: #1f2528;
+  --text: #f0f0f0;
+  --text-muted: #b0b6ba;
+  --text-subtle: #8c9296;
+  --border: #3a4044;
+  --chip-bg: #2a3134;
+  --sweden-bg: #2a2718;
+  --shadow: rgba(0, 0, 0, 0.4);
+  --shadow-strong: rgba(0, 0, 0, 0.5);
 }
 
 * {
@@ -18,6 +43,7 @@ body {
   font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   background: var(--bg);
   color: var(--text);
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 main {
@@ -27,14 +53,71 @@ main {
 }
 
 .filters {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 8px;
+  box-shadow: 0 1px 3px var(--shadow-strong);
+}
+
+.filters-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.icon-btn:active {
+  transform: scale(0.97);
+}
+
+.icon-btn-round {
+  padding: 8px 10px;
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.chevron {
+  transition: transform 0.2s ease;
+  font-size: 0.8rem;
+  color: var(--text-subtle);
+}
+
+.icon-btn.expanded .chevron {
+  transform: rotate(180deg);
+}
+
+.filter-count {
+  background: var(--green);
+  color: #fff;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  padding: 1px 6px;
+  font-weight: 700;
+}
+
+.filters-body:not([hidden]) {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-  background: var(--card-bg);
-  border-radius: 10px;
-  padding: 16px;
-  margin-bottom: 8px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
 }
 
 .filter-group {
@@ -46,15 +129,17 @@ main {
 
 .filter-group label {
   font-weight: 600;
-  color: #444;
+  color: var(--text-muted);
 }
 
 .filter-group input[type="text"],
 .filter-group select {
   padding: 6px 8px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border);
   border-radius: 6px;
   font-size: 0.95rem;
+  background: var(--card-bg);
+  color: var(--text);
 }
 
 .checkbox-group {
@@ -67,11 +152,28 @@ main {
   gap: 6px;
   font-weight: 500;
   white-space: nowrap;
+  color: var(--text);
+}
+
+.reset-btn {
+  align-self: center;
+  padding: 6px 14px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.reset-btn:active {
+  background: var(--chip-bg);
 }
 
 .result-count {
   font-size: 0.85rem;
-  color: #666;
+  color: var(--text-muted);
   margin: 8px 4px;
 }
 
@@ -83,9 +185,17 @@ main {
   font-size: 1rem;
   color: var(--green);
   border-bottom: 2px solid var(--gold);
-  padding-bottom: 4px;
+  padding: 8px 0 4px;
   margin: 18px 0 10px;
   text-transform: capitalize;
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+  z-index: 2;
+}
+
+.date-group:first-child .date-heading {
+  margin-top: 0;
 }
 
 .match-card {
@@ -93,20 +203,29 @@ main {
   border-radius: 10px;
   padding: 12px 14px;
   margin-bottom: 8px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 1px 3px var(--shadow);
   display: grid;
   grid-template-columns: 1fr;
   gap: 6px;
   border-left: 4px solid transparent;
+  transition: transform 0.1s ease, box-shadow 0.1s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.match-card:active {
+  transform: scale(0.99);
 }
 
 .match-card.sweden {
   border-left-color: var(--gold);
-  background: #fffdf3;
+  background: var(--sweden-bg);
 }
 
 .match-card.today {
   border-left-color: var(--green);
+}
+
+.match-card.live {
+  border-left-color: var(--tv4);
 }
 
 .match-card.played {
@@ -118,7 +237,7 @@ main {
   align-items: center;
   gap: 8px;
   font-size: 0.85rem;
-  color: #555;
+  color: var(--text-muted);
 }
 
 .match-time .time {
@@ -136,10 +255,41 @@ main {
   font-weight: 600;
 }
 
+.live-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--tv4);
+  color: #fff;
+  font-size: 0.7rem;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #fff;
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(1.3); }
+}
+
 .stage-badge {
   margin-left: auto;
-  font-size: 0.75rem;
-  color: #777;
+  font-size: 0.7rem;
+  color: var(--text-subtle);
+  background: var(--chip-bg);
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-weight: 600;
+  white-space: nowrap;
 }
 
 .match-teams {
@@ -172,7 +322,7 @@ main {
 }
 
 .vs {
-  color: #999;
+  color: var(--text-subtle);
   font-weight: 400;
 }
 
@@ -184,7 +334,7 @@ main {
 
 .match-venue {
   font-size: 0.85rem;
-  color: #666;
+  color: var(--text-muted);
 }
 
 .match-channel {
@@ -214,26 +364,68 @@ main {
 
 .legend {
   font-size: 0.8rem;
-  color: #777;
+  color: var(--text-subtle);
   margin-top: 24px;
   line-height: 1.6;
 }
 
 .empty {
   text-align: center;
-  color: #888;
-  padding: 24px;
+  color: var(--text-subtle);
+  padding: 48px 24px;
+}
+
+.empty::before {
+  content: "🔍";
+  display: block;
+  font-size: 2rem;
+  margin-bottom: 8px;
+}
+
+.today-fab {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 20;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 999px;
+  background: var(--green);
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 700;
+  font-family: inherit;
+  box-shadow: 0 4px 12px var(--shadow-strong);
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(12px);
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.today-fab.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.today-fab:active {
+  transform: scale(0.96);
 }
 
 @media (min-width: 600px) {
   .match-card {
-    grid-template-columns: 100px 1fr 1fr auto;
+    grid-template-columns: 110px 1fr 1fr auto;
     align-items: center;
   }
 
   .match-time {
     flex-direction: column;
     align-items: flex-start;
+    gap: 4px;
   }
 
   .stage-badge {
