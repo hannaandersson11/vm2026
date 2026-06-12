@@ -37,17 +37,12 @@ function matchCard(match, now) {
   const start = new Date(match.datetime);
   const isLive = !isPast && now >= start && now - start <= LIVE_DURATION_MS;
 
-  const score = isPast
-    ? `<span class="score">${match.homeScore} – ${match.awayScore}</span>`
-    : "";
-
   const homeFlag = match.homeFlag ? `<span class="flag">${match.homeFlag}</span>` : "";
   const awayFlag = match.awayFlag ? `<span class="flag">${match.awayFlag}</span>` : "";
 
   const classes = ["match-card"];
   if (isSweden) classes.push("sweden");
   if (isToday) classes.push("today");
-  if (isPast) classes.push("played");
   if (isLive) classes.push("live");
 
   let statusBadge = "";
@@ -57,20 +52,43 @@ function matchCard(match, now) {
     statusBadge = '<span class="today-badge">Idag</span>';
   }
 
+  let homeRowClass = "";
+  let awayRowClass = "";
+  let homeScore = "";
+  let awayScore = "";
+  if (isPast) {
+    homeScore = `<span class="team-score">${match.homeScore}</span>`;
+    awayScore = `<span class="team-score">${match.awayScore}</span>`;
+    if (match.homeScore > match.awayScore) {
+      homeRowClass = " winner";
+      awayRowClass = " loser";
+    } else if (match.awayScore > match.homeScore) {
+      awayRowClass = " winner";
+      homeRowClass = " loser";
+    }
+  }
+
   return `
     <div class="${classes.join(" ")}">
-      <div class="match-time">
+      <div class="match-header">
         <span class="time">${match.time}</span>
         ${statusBadge}
         <span class="stage-badge">${stageLabel(match)}</span>
       </div>
       <div class="match-teams">
-        <span class="team home">${homeFlag} ${match.home}</span>
-        ${score || '<span class="vs">–</span>'}
-        <span class="team away">${match.away} ${awayFlag}</span>
+        <div class="team-row${homeRowClass}">
+          <span class="team-name">${homeFlag} ${match.home}</span>
+          ${homeScore}
+        </div>
+        <div class="team-row${awayRowClass}">
+          <span class="team-name">${awayFlag} ${match.away}</span>
+          ${awayScore}
+        </div>
       </div>
-      <div class="match-venue">📍 ${match.venue}, ${match.city}, ${match.country}</div>
-      <div class="match-channel">${channelBadge(match.channel)}</div>
+      <div class="match-footer">
+        <span class="match-venue">📍 ${match.venue}, ${match.city}, ${match.country}</span>
+        ${channelBadge(match.channel)}
+      </div>
     </div>
   `;
 }
