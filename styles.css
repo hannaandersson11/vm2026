@@ -20,24 +20,6 @@ body {
   color: var(--text);
 }
 
-.site-header {
-  background: var(--green);
-  color: #fff;
-  padding: 24px 16px;
-  text-align: center;
-}
-
-.site-header h1 {
-  margin: 0 0 4px;
-  font-size: 1.8rem;
-}
-
-.subtitle {
-  margin: 0;
-  color: var(--gold);
-  font-size: 0.95rem;
-}
-
 main {
   max-width: 800px;
   margin: 0 auto;

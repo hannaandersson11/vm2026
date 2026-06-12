@@ -106,7 +106,7 @@ function render() {
   list.innerHTML = groups
     .map(
       (g) => `
-      <section class="date-group">
+      <section class="date-group" data-date="${g.date}">
         <h2 class="date-heading">${formatDateHeading(g.date)}</h2>
         ${g.matches.map(matchCard).join("")}
       </section>
@@ -115,9 +115,24 @@ function render() {
     .join("");
 }
 
+function scrollToToday() {
+  const today = todayKey();
+  const groups = document.querySelectorAll(".date-group");
+  let target = null;
+  for (const group of groups) {
+    if (group.dataset.date >= today) {
+      target = group;
+      break;
+    }
+  }
+  if (!target) target = groups[groups.length - 1];
+  if (target) target.scrollIntoView({ block: "start" });
+}
+
 document.getElementById("search").addEventListener("input", render);
 ["channel", "stage", "sweden-only", "upcoming-only"].forEach((id) =>
   document.getElementById(id).addEventListener("change", render)
 );
 
 render();
+scrollToToday();
