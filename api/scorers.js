@@ -1,7 +1,7 @@
 // Serverless proxy mot football-data.org: håller API-nyckeln hemlig och
 // cachar svaret så att vi håller oss inom gratisplanens 10 anrop/minut,
 // oavsett hur många besökare appen har.
-const FD_URL = "https://api.football-data.org/v4/competitions/WC/scorers?limit=50";
+const FD_URL = "https://api.football-data.org/v4/competitions/WC/scorers?limit=20";
 const CACHE_TTL_MS = 5 * 60 * 1000;
 
 // Återanvänds mellan anrop så länge funktionsinstansen hålls varm.
@@ -48,7 +48,7 @@ module.exports = async (req, res) => {
     }
 
     const data = await upstream.json();
-    const players = data.scorers.map((s) => ({
+    const scorers = data.scorers.map((s) => ({
       player: s.player.name,
       team: s.team.shortName || s.team.name,
       played: s.playedMatches,
@@ -56,13 +56,7 @@ module.exports = async (req, res) => {
       assists: s.assists,
     }));
 
-    const scorers = [...players].sort((a, b) => b.goals - a.goals).slice(0, 20);
-    const assists = players
-      .filter((p) => p.assists)
-      .sort((a, b) => b.assists - a.assists)
-      .slice(0, 20);
-
-    const body = { updatedAt: new Date().toISOString(), scorers, assists };
+    const body = { updatedAt: new Date().toISOString(), scorers };
     cache = { fetchedAt: now, body };
 
     return res.status(200).json(body);

@@ -564,14 +564,3 @@ main {
   color: var(--text-subtle);
   font-weight: 500;
 }
-
-.stats-empty {
-  text-align: center;
-  color: var(--text-subtle);
-  font-size: 0.85rem;
-  padding: 12px 0;
-}
-
-#scorers-list .standings-group:not(:last-child) {
-  margin-bottom: 12px;
-}

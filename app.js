@@ -399,36 +399,35 @@ function renderStandings() {
   document.getElementById("standings-list").innerHTML = GROUPS.map((g) => standingsTable(g, standings[g])).join("");
 }
 
-function scorerRow(p, i, highlight) {
+function scorerRow(p, i) {
   const info = TEAM_INFO[p.team] || { flag: "", name: p.team };
   const flag = info.flag ? `<span class="flag">${info.flag}</span>` : "";
   const assists = p.assists ?? "–";
-  const goalsClass = highlight === "goals" ? "col-points" : "";
-  const assistsClass = highlight === "assists" ? "col-points" : "";
   return `
     <tr>
       <td class="col-team">
         <span class="standings-pos">${i + 1}</span>${flag}<span class="scorer-name">${p.player}<span class="scorer-team-name">${info.name}</span></span>
       </td>
       <td>${p.played}</td>
-      <td class="${goalsClass}">${p.goals}</td>
-      <td class="${assistsClass}">${assists}</td>
+      <td class="col-points">${p.goals}</td>
+      <td>${assists}</td>
     </tr>
   `;
 }
 
-function scorersTable(title, rows, highlight) {
-  if (rows.length === 0) {
-    return `
-      <div class="standings-group">
-        <h2 class="standings-heading">${title}</h2>
-        <p class="stats-empty">Ingen data ännu.</p>
-      </div>
-    `;
+function renderScorers() {
+  const list = document.getElementById("scorers-list");
+  if (scorers === null) {
+    list.innerHTML = `<p class="empty">Laddar skytteliga…</p>`;
+    return;
   }
-  return `
+  if (scorers.length === 0) {
+    list.innerHTML = `<p class="empty">Ingen skyttedata ännu.</p>`;
+    return;
+  }
+  list.innerHTML = `
     <div class="standings-group">
-      <h2 class="standings-heading">${title}</h2>
+      <h2 class="standings-heading">Skytteliga</h2>
       <table class="standings-table scorers-table">
         <thead>
           <tr>
@@ -439,22 +438,11 @@ function scorersTable(title, rows, highlight) {
           </tr>
         </thead>
         <tbody>
-          ${rows.map((p, i) => scorerRow(p, i, highlight)).join("")}
+          ${scorers.map(scorerRow).join("")}
         </tbody>
       </table>
     </div>
   `;
-}
-
-function renderScorers() {
-  const list = document.getElementById("scorers-list");
-  if (scorers === null) {
-    list.innerHTML = `<p class="empty">Laddar statistik…</p>`;
-    return;
-  }
-  list.innerHTML =
-    scorersTable("Skytteliga", scorers.goals, "goals") +
-    scorersTable("Assistliga", scorers.assists, "assists");
 }
 
 function findTodayTarget() {
@@ -594,7 +582,7 @@ async function fetchScorers() {
     const res = await fetch(SCORERS_URL);
     if (!res.ok) return;
     const data = await res.json();
-    scorers = { goals: data.scorers, assists: data.assists };
+    scorers = data.scorers;
     if (!views.stats.hidden) renderScorers();
   } catch {
     // Ingen uppkoppling eller proxyn är otillgänglig.
