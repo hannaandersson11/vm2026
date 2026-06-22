@@ -78,6 +78,7 @@ const TEAM_INFO = {
 
 let liveScores = null;
 let scorers = null;
+let hideScores = localStorage.getItem("hideScores") !== "false";
 
 function todayKey() {
   const d = new Date();
@@ -158,7 +159,7 @@ function matchCard(match, now) {
   const isToday = match.date === today;
 
   const { home: homeScoreValue, away: awayScoreValue, isFinished, isLive } = getMatchState(match, now);
-  const showScore = isFinished || isLive;
+  const showScore = (isFinished || isLive) && !hideScores;
 
   const homeFlag = match.homeFlag ? `<span class="flag">${match.homeFlag}</span>` : "";
   const awayFlag = match.awayFlag ? `<span class="flag">${match.awayFlag}</span>` : "";
@@ -588,6 +589,22 @@ themeToggle.addEventListener("click", () => {
   const next = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
   applyTheme(next);
   localStorage.setItem("theme", next);
+});
+
+const scoreToggle = document.getElementById("score-toggle");
+
+function updateScoreToggle() {
+  scoreToggle.textContent = hideScores ? "Visa resultat" : "Dölj resultat";
+  scoreToggle.setAttribute("aria-label", hideScores ? "Visa matchresultat" : "Dölj matchresultat");
+}
+
+updateScoreToggle();
+
+scoreToggle.addEventListener("click", () => {
+  hideScores = !hideScores;
+  localStorage.setItem("hideScores", String(hideScores));
+  updateScoreToggle();
+  render();
 });
 
 document.getElementById("today-fab").addEventListener("click", () => scrollToToday("smooth"));

@@ -68,6 +68,12 @@ main {
   gap: 8px;
 }
 
+.toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .icon-btn {
   display: inline-flex;
   align-items: center;
