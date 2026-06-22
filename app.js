@@ -396,7 +396,72 @@ function standingsTable(group, rows) {
 
 function renderStandings() {
   const standings = computeStandings(new Date());
-  document.getElementById("standings-list").innerHTML = GROUPS.map((g) => standingsTable(g, standings[g])).join("");
+  const bestThird = computeBestThirdPlaced(standings);
+  document.getElementById("standings-list").innerHTML =
+    GROUPS.map((g) => standingsTable(g, standings[g])).join("") +
+    bestThirdTable(bestThird);
+}
+
+function computeBestThirdPlaced(standings) {
+  const thirds = [];
+  for (const g of GROUPS) {
+    if (standings[g].length >= 3) {
+      thirds.push({ ...standings[g][2], group: g });
+    }
+  }
+  thirds.sort(
+    (a, b) =>
+      b.points - a.points ||
+      (b.goalsFor - b.goalsAgainst) - (a.goalsFor - a.goalsAgainst) ||
+      b.goalsFor - a.goalsFor ||
+      a.name.localeCompare(b.name)
+  );
+  return thirds;
+}
+
+function bestThirdTable(rows) {
+  return `
+    <div class="standings-group best-third-group">
+      <h2 class="standings-heading">Bästa 3:or</h2>
+      <table class="standings-table">
+        <thead>
+          <tr>
+            <th class="col-team">Lag</th>
+            <th>Gr</th>
+            <th>S</th>
+            <th>V</th>
+            <th>O</th>
+            <th>F</th>
+            <th>MS</th>
+            <th>P</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${rows.map((r, i) => {
+            const flag = r.flag ? `<span class="flag">${r.flag}</span>` : "";
+            const classes = [];
+            if (r.name === "Sverige") classes.push("sweden");
+            if (i < 8) classes.push("qualified");
+            else classes.push("not-qualified");
+            if (i === 7) classes.push("cutoff");
+            return `
+              <tr class="${classes.join(" ")}">
+                <td class="col-team"><span class="standings-pos">${i + 1}</span>${flag} ${r.name}</td>
+                <td>${r.group}</td>
+                <td>${r.played}</td>
+                <td>${r.won}</td>
+                <td>${r.drawn}</td>
+                <td>${r.lost}</td>
+                <td>${r.goalsFor - r.goalsAgainst}</td>
+                <td class="col-points">${r.points}</td>
+              </tr>
+            `;
+          }).join("")}
+        </tbody>
+      </table>
+      <p class="best-third-note">Topp 8 går vidare till sextondelsfinalen.</p>
+    </div>
+  `;
 }
 
 function scorerRow(p, i) {

@@ -544,6 +544,24 @@ main {
   color: var(--accent);
 }
 
+.best-third-group {
+  grid-column: 1 / -1;
+}
+
+.standings-table tr.not-qualified {
+  opacity: 0.45;
+}
+
+.standings-table tr.cutoff td {
+  border-bottom: 2px dashed var(--primary);
+}
+
+.best-third-note {
+  font-size: 0.8rem;
+  color: var(--text-subtle);
+  margin: 8px 0 0;
+}
+
 .scorers-table .col-team {
   white-space: normal;
 }
