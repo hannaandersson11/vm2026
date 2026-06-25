@@ -54,6 +54,8 @@ module.exports = async (req, res) => {
         status: m.status,
         home: m.score?.fullTime?.home ?? 0,
         away: m.score?.fullTime?.away ?? 0,
+        homeTeam: m.homeTeam?.shortName || null,
+        awayTeam: m.awayTeam?.shortName || null,
       };
     }
 

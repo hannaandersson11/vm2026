@@ -80,6 +80,29 @@ let liveScores = null;
 let scorers = null;
 let hideScores = localStorage.getItem("hideScores") !== "false";
 
+function resolveTeams(match) {
+  const live = liveScores && liveScores[match.fdId];
+  if (!live) return match;
+
+  let changed = false;
+  const resolved = {};
+
+  if (live.homeTeam) {
+    const info = TEAM_INFO[live.homeTeam];
+    resolved.home = info ? info.name : live.homeTeam;
+    resolved.homeFlag = info ? info.flag : null;
+    changed = true;
+  }
+  if (live.awayTeam) {
+    const info = TEAM_INFO[live.awayTeam];
+    resolved.away = info ? info.name : live.awayTeam;
+    resolved.awayFlag = info ? info.flag : null;
+    changed = true;
+  }
+
+  return changed ? { ...match, ...resolved } : match;
+}
+
 function todayKey() {
   const d = new Date();
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
@@ -251,7 +274,9 @@ function render() {
 
   updateFilterIndicators();
 
-  const filtered = MATCHES.filter((m) => {
+  const resolved = MATCHES.map(resolveTeams);
+
+  const filtered = resolved.filter((m) => {
     if (search) {
       const haystack = `${m.home} ${m.away} ${m.city} ${m.venue}`.toLowerCase();
       if (!haystack.includes(search)) return false;
