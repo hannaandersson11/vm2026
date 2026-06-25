@@ -103,6 +103,65 @@ function resolveTeams(match) {
   return changed ? { ...match, ...resolved } : match;
 }
 
+function buildKnockoutLookup(standings) {
+  const lookup = {};
+  const completedGroups = new Set();
+
+  for (const g of GROUPS) {
+    const rows = standings[g];
+    if (rows.length >= 4 && rows.every((r) => r.played === 3)) {
+      completedGroups.add(g);
+      lookup[`Vinnare grupp ${g}`] = rows[0];
+      lookup[`Tvåa grupp ${g}`] = rows[1];
+    }
+  }
+
+  if (completedGroups.size === 12) {
+    const bestThird = computeBestThirdPlaced(standings);
+    const qualified = bestThird.slice(0, 8);
+    const qualifiedGroups = new Set(qualified.map((r) => r.group));
+
+    for (const m of MATCHES) {
+      if (m.stage !== "Sextondelsfinal") continue;
+      for (const side of ["home", "away"]) {
+        const name = m[side];
+        const thirdMatch = name.match(/^3:a i grupp (.+)$/);
+        if (!thirdMatch) continue;
+        const candidates = thirdMatch[1].split("/");
+        const match = candidates.find((g) => qualifiedGroups.has(g));
+        if (match) {
+          const team = qualified.find((r) => r.group === match);
+          if (team) lookup[name] = team;
+        }
+      }
+    }
+  }
+
+  return lookup;
+}
+
+function resolveKnockout(match, knockoutLookup) {
+  if (match.stage === "Gruppspel") return match;
+
+  let changed = false;
+  const resolved = {};
+
+  const homeLookup = knockoutLookup[match.home];
+  if (homeLookup) {
+    resolved.home = homeLookup.name;
+    resolved.homeFlag = homeLookup.flag;
+    changed = true;
+  }
+  const awayLookup = knockoutLookup[match.away];
+  if (awayLookup) {
+    resolved.away = awayLookup.name;
+    resolved.awayFlag = awayLookup.flag;
+    changed = true;
+  }
+
+  return changed ? { ...match, ...resolved } : match;
+}
+
 function todayKey() {
   const d = new Date();
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
@@ -274,7 +333,8 @@ function render() {
 
   updateFilterIndicators();
 
-  const resolved = MATCHES.map(resolveTeams);
+  const knockoutLookup = buildKnockoutLookup(computeStandings(now));
+  const resolved = MATCHES.map((m) => resolveKnockout(resolveTeams(m), knockoutLookup));
 
   const filtered = resolved.filter((m) => {
     if (search) {
