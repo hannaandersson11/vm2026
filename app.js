@@ -250,10 +250,13 @@ function matchCard(match, now) {
   if (isSweden) classes.push("sweden");
   if (isToday) classes.push("today");
   if (isLive) classes.push("live");
+  if (isFinished) classes.push("finished");
 
   let statusBadge = "";
   if (isLive) {
     statusBadge = '<span class="live-badge"><span class="live-dot"></span>Pågår</span>';
+  } else if (isFinished) {
+    statusBadge = '<span class="finished-badge">Avslutad</span>';
   } else if (isToday) {
     statusBadge = '<span class="today-badge">Idag</span>';
   }

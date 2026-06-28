@@ -243,6 +243,14 @@ main {
   border-left-color: var(--tv4);
 }
 
+.match-card.finished {
+  opacity: 0.55;
+}
+
+.match-card.finished:hover {
+  opacity: 0.85;
+}
+
 .match-header {
   display: flex;
   flex-direction: column;
@@ -278,6 +286,15 @@ main {
   padding: 2px 6px;
   border-radius: 4px;
   font-weight: 600;
+}
+
+.finished-badge {
+  font-size: 0.7rem;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 600;
+  color: var(--text-subtle);
+  background: var(--chip-bg);
 }
 
 .live-badge {
