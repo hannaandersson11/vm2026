@@ -237,7 +237,7 @@ function resolveFromBracket(matches, now) {
     }
   }
 
-  return Object.values(byId).sort((a, b) => a.id - b.id);
+  return matches.map((m) => byId[m.id] || m);
 }
 
 function todayKey() {
