@@ -6,6 +6,15 @@ const LIVE_DURATION_MS = 2.5 * 60 * 60 * 1000;
 const LIVE_SCORES_URL = "/api/scores";
 const SCORERS_URL = "/api/scorers";
 
+const BRACKET = {
+  90: [73, 74],  89: [76, 78],  91: [75, 77],  92: [79, 80],
+  93: [84, 83],  94: [82, 81],  95: [88, 87],  96: [85, 86],
+  97: [90, 89],  98: [93, 94],  99: [91, 92],  100: [95, 96],
+  101: [97, 98], 102: [99, 100],
+  104: [101, 102],
+};
+const BRONZE_SOURCES = [101, 102];
+
 const CITY_TIMEZONES = {
   "Atlanta": "America/New_York",
   "Boston": "America/New_York",
@@ -160,6 +169,75 @@ function resolveKnockout(match, knockoutLookup) {
   }
 
   return changed ? { ...match, ...resolved } : match;
+}
+
+function getMatchResult(matchId, matchesById, now) {
+  const m = matchesById[matchId];
+  if (!m) return null;
+
+  const { home, away, isFinished } = getMatchState(m, now);
+  if (!isFinished) return null;
+
+  const live = liveScores && liveScores[m.fdId];
+  if (live && live.winner === "HOME_TEAM") return { winner: { name: m.home, flag: m.homeFlag }, loser: { name: m.away, flag: m.awayFlag } };
+  if (live && live.winner === "AWAY_TEAM") return { winner: { name: m.away, flag: m.awayFlag }, loser: { name: m.home, flag: m.homeFlag } };
+  if (home > away) return { winner: { name: m.home, flag: m.homeFlag }, loser: { name: m.away, flag: m.awayFlag } };
+  if (away > home) return { winner: { name: m.away, flag: m.awayFlag }, loser: { name: m.home, flag: m.homeFlag } };
+  return null;
+}
+
+function resolveFromBracket(matches, now) {
+  const byId = {};
+  for (const m of matches) byId[m.id] = m;
+
+  const rounds = [
+    [90, 89, 91, 92, 93, 94, 95, 96],
+    [97, 98, 99, 100],
+    [101, 102],
+    [103, 104],
+  ];
+
+  for (const roundIds of rounds) {
+    for (const id of roundIds) {
+      const m = byId[id];
+      if (!m) continue;
+
+      const isBronze = id === 103;
+      const sources = isBronze ? BRONZE_SOURCES : BRACKET[id];
+      if (!sources) continue;
+
+      let changed = false;
+      const updates = {};
+
+      for (const [side, flagKey, sourceId] of [["home", "homeFlag", sources[0]], ["away", "awayFlag", sources[1]]]) {
+        const result = getMatchResult(sourceId, byId, now);
+        if (result) {
+          const team = isBronze ? result.loser : result.winner;
+          updates[side] = team.name;
+          updates[flagKey] = team.flag;
+          changed = true;
+        } else {
+          const src = byId[sourceId];
+          if (src && src.home && src.away && src.home !== "Ej fastställt" && src.away !== "Ej fastställt") {
+            const prefix = isBronze ? "F" : "V";
+            const bothResolved = src.homeFlag && src.awayFlag;
+            if (bothResolved) {
+              updates[side] = `${prefix} ${src.home}/${src.away}`;
+            } else {
+              const d = new Date(src.date + "T12:00:00+02:00");
+              updates[side] = `${prefix} ${src.stage} ${d.getDate()}/${d.getMonth() + 1}`;
+            }
+            updates[flagKey] = null;
+            changed = true;
+          }
+        }
+      }
+
+      if (changed) byId[id] = { ...m, ...updates };
+    }
+  }
+
+  return Object.values(byId).sort((a, b) => a.id - b.id);
 }
 
 function todayKey() {
@@ -337,7 +415,8 @@ function render() {
   updateFilterIndicators();
 
   const knockoutLookup = buildKnockoutLookup(computeStandings(now));
-  const resolved = MATCHES.map((m) => resolveKnockout(resolveTeams(m), knockoutLookup));
+  const withTeams = MATCHES.map((m) => resolveKnockout(resolveTeams(m), knockoutLookup));
+  const resolved = resolveFromBracket(withTeams, now);
 
   const filtered = resolved.filter((m) => {
     if (search) {

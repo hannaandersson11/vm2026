@@ -56,6 +56,7 @@ module.exports = async (req, res) => {
         away: m.score?.fullTime?.away ?? 0,
         homeTeam: m.homeTeam?.shortName || null,
         awayTeam: m.awayTeam?.shortName || null,
+        winner: m.score?.winner || null,
       };
     }
 
