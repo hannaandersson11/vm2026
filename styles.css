@@ -558,7 +558,8 @@ main {
   grid-column: 1 / -1;
 }
 
-.standings-table tr.not-qualified {
+.standings-table tr.not-qualified,
+.standings-table tr.eliminated {
   opacity: 0.45;
 }
 

@@ -440,7 +440,8 @@ function computeStandings(now) {
   return standings;
 }
 
-function standingsTable(group, rows) {
+function standingsTable(group, rows, eliminatedTeams) {
+  const groupDone = rows.length >= 4 && rows.every((r) => r.played === 3);
   return `
     <div class="standings-group">
       <h2 class="standings-heading">Grupp ${group}</h2>
@@ -460,9 +461,14 @@ function standingsTable(group, rows) {
           ${rows
             .map((r, i) => {
               const flag = r.flag ? `<span class="flag">${r.flag}</span>` : "";
-              const rowClass = r.name === "Sverige" ? " sweden" : "";
+              const classes = [];
+              if (r.name === "Sverige") classes.push("sweden");
+              if (groupDone && i <= 1) classes.push("qualified");
+              if (groupDone && i === 3) classes.push("eliminated");
+              if (groupDone && i === 2 && eliminatedTeams.has(r.name)) classes.push("eliminated");
+              if (groupDone && i === 1) classes.push("cutoff");
               return `
-                <tr class="${rowClass}">
+                <tr class="${classes.join(" ")}">
                   <td class="col-team"><span class="standings-pos">${i + 1}</span>${flag} ${r.name}</td>
                   <td>${r.played}</td>
                   <td>${r.won}</td>
@@ -483,8 +489,21 @@ function standingsTable(group, rows) {
 function renderStandings() {
   const standings = computeStandings(new Date());
   const bestThird = computeBestThirdPlaced(standings);
+
+  const allDone = GROUPS.every((g) => standings[g].length >= 4 && standings[g].every((r) => r.played === 3));
+  const eliminatedTeams = new Set();
+  if (allDone) {
+    bestThird.slice(8).forEach((r) => eliminatedTeams.add(r.name));
+  }
+  GROUPS.forEach((g) => {
+    const rows = standings[g];
+    if (rows.length >= 4 && rows.every((r) => r.played === 3)) {
+      eliminatedTeams.add(rows[3].name);
+    }
+  });
+
   document.getElementById("standings-list").innerHTML =
-    GROUPS.map((g) => standingsTable(g, standings[g])).join("") +
+    GROUPS.map((g) => standingsTable(g, standings[g], eliminatedTeams)).join("") +
     bestThirdTable(bestThird);
 }
 
