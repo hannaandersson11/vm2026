@@ -376,6 +376,13 @@ main {
   text-align: right;
 }
 
+.penalty-score {
+  font-weight: 600;
+  font-size: 0.8rem;
+  color: var(--text-subtle);
+  margin-left: 4px;
+}
+
 .match-footer {
   display: flex;
   flex-wrap: wrap;

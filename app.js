@@ -285,6 +285,7 @@ function getMatchState(match, now) {
   let isLive = false;
   let suppressLive = false;
   let isPenalties = false;
+  let penaltyScore = null;
 
   const live = liveScores && liveScores[match.fdId];
   if (live) {
@@ -297,6 +298,7 @@ function getMatchState(match, now) {
       home = live.home;
       away = live.away;
       isPenalties = !!live.penalties;
+      penaltyScore = live.penaltyScore || null;
     } else if (live.status === "POSTPONED" || live.status === "SUSPENDED" || live.status === "CANCELLED") {
       suppressLive = true;
     }
@@ -312,7 +314,7 @@ function getMatchState(match, now) {
     if (away === null) away = 0;
   }
 
-  return { home, away, isFinished, isLive, isPenalties };
+  return { home, away, isFinished, isLive, isPenalties, penaltyScore };
 }
 
 function matchCard(match, now) {
@@ -320,7 +322,7 @@ function matchCard(match, now) {
   const today = todayKey();
   const isToday = match.date === today;
 
-  const { home: homeScoreValue, away: awayScoreValue, isFinished, isLive, isPenalties } = getMatchState(match, now);
+  const { home: homeScoreValue, away: awayScoreValue, isFinished, isLive, isPenalties, penaltyScore } = getMatchState(match, now);
   const showScore = (isFinished || isLive) && !hideScores;
 
   const homeFlag = match.homeFlag ? `<span class="flag">${match.homeFlag}</span>` : "";
@@ -348,8 +350,14 @@ function matchCard(match, now) {
   let homeScore = "";
   let awayScore = "";
   if (showScore) {
-    homeScore = `<span class="team-score">${homeScoreValue}</span>`;
-    awayScore = `<span class="team-score">${awayScoreValue}</span>`;
+    let homePenNote = "";
+    let awayPenNote = "";
+    if (isPenalties && penaltyScore && penaltyScore.home !== null && penaltyScore.away !== null) {
+      homePenNote = `<span class="penalty-score">(${penaltyScore.home})</span>`;
+      awayPenNote = `<span class="penalty-score">(${penaltyScore.away})</span>`;
+    }
+    homeScore = `<span class="team-score">${homeScoreValue}</span>${homePenNote}`;
+    awayScore = `<span class="team-score">${awayScoreValue}</span>${awayPenNote}`;
     if (isFinished) {
       if (homeScoreValue > awayScoreValue) {
         homeRowClass = " winner";

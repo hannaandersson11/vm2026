@@ -84,6 +84,7 @@ module.exports = async (req, res) => {
         awayTeam: m.awayTeam?.shortName || null,
         winner,
         penalties: isPenalties,
+        penaltyScore: isPenalties && score.penalties ? { home: score.penalties.home ?? null, away: score.penalties.away ?? null } : null,
       };
     }
 
