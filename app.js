@@ -284,6 +284,7 @@ function getMatchState(match, now) {
   let isFinished = home !== null && away !== null;
   let isLive = false;
   let suppressLive = false;
+  let isPenalties = false;
 
   const live = liveScores && liveScores[match.fdId];
   if (live) {
@@ -295,6 +296,7 @@ function getMatchState(match, now) {
       isFinished = true;
       home = live.home;
       away = live.away;
+      isPenalties = !!live.penalties;
     } else if (live.status === "POSTPONED" || live.status === "SUSPENDED" || live.status === "CANCELLED") {
       suppressLive = true;
     }
@@ -310,7 +312,7 @@ function getMatchState(match, now) {
     if (away === null) away = 0;
   }
 
-  return { home, away, isFinished, isLive };
+  return { home, away, isFinished, isLive, isPenalties };
 }
 
 function matchCard(match, now) {
@@ -318,7 +320,7 @@ function matchCard(match, now) {
   const today = todayKey();
   const isToday = match.date === today;
 
-  const { home: homeScoreValue, away: awayScoreValue, isFinished, isLive } = getMatchState(match, now);
+  const { home: homeScoreValue, away: awayScoreValue, isFinished, isLive, isPenalties } = getMatchState(match, now);
   const showScore = (isFinished || isLive) && !hideScores;
 
   const homeFlag = match.homeFlag ? `<span class="flag">${match.homeFlag}</span>` : "";
@@ -334,7 +336,9 @@ function matchCard(match, now) {
   if (isLive) {
     statusBadge = '<span class="live-badge"><span class="live-dot"></span>Pågår</span>';
   } else if (isFinished) {
-    statusBadge = '<span class="finished-badge">Avslutad</span>';
+    statusBadge = isPenalties
+      ? '<span class="finished-badge">Avslutad efter straffar</span>'
+      : '<span class="finished-badge">Avslutad</span>';
   } else if (isToday) {
     statusBadge = '<span class="today-badge">Idag</span>';
   }

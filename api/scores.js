@@ -50,13 +50,40 @@ module.exports = async (req, res) => {
     const data = await upstream.json();
     const matches = {};
     for (const m of data.matches) {
+      const score = m.score || {};
+      // Matcher avgjorda på straffar får ett uppblåst/inkonsekvent fullTime från API:t,
+      // så själva matchresultatet hämtas istället från ordinarie tid + förlängning.
+      const isPenalties = score.duration === "PENALTY_SHOOTOUT";
+
+      let home, away;
+      if (isPenalties) {
+        home = (score.regularTime?.home ?? 0) + (score.extraTime?.home ?? 0);
+        away = (score.regularTime?.away ?? 0) + (score.extraTime?.away ?? 0);
+      } else {
+        home = score.fullTime?.home ?? 0;
+        away = score.fullTime?.away ?? 0;
+      }
+
+      // API:t sätter winner till null vid straffläggning, så vinnaren härleds
+      // istället från fullTime (eller som sista utväg straffstatistiken).
+      let winner = score.winner || null;
+      if (isPenalties && !winner) {
+        const ft = score.fullTime || {};
+        const pens = score.penalties || {};
+        if (ft.home > ft.away) winner = "HOME_TEAM";
+        else if (ft.away > ft.home) winner = "AWAY_TEAM";
+        else if (pens.home > pens.away) winner = "HOME_TEAM";
+        else if (pens.away > pens.home) winner = "AWAY_TEAM";
+      }
+
       matches[m.id] = {
         status: m.status,
-        home: m.score?.fullTime?.home ?? 0,
-        away: m.score?.fullTime?.away ?? 0,
+        home,
+        away,
         homeTeam: m.homeTeam?.shortName || null,
         awayTeam: m.awayTeam?.shortName || null,
-        winner: m.score?.winner || null,
+        winner,
+        penalties: isPenalties,
       };
     }
 
