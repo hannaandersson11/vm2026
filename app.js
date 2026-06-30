@@ -356,8 +356,8 @@ function matchCard(match, now) {
       homePenNote = `<span class="penalty-score">(${penaltyScore.home})</span>`;
       awayPenNote = `<span class="penalty-score">(${penaltyScore.away})</span>`;
     }
-    homeScore = `<span class="team-score">${homeScoreValue}</span>${homePenNote}`;
-    awayScore = `<span class="team-score">${awayScoreValue}</span>${awayPenNote}`;
+    homeScore = `<span class="score-cell"><span class="team-score">${homeScoreValue}</span>${homePenNote}</span>`;
+    awayScore = `<span class="score-cell"><span class="team-score">${awayScoreValue}</span>${awayPenNote}</span>`;
     if (isFinished) {
       if (homeScoreValue > awayScoreValue) {
         homeRowClass = " winner";

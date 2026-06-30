@@ -369,6 +369,12 @@ main {
   font-size: 1.4rem;
 }
 
+.score-cell {
+  display: flex;
+  align-items: baseline;
+  flex-shrink: 0;
+}
+
 .team-score {
   font-weight: 800;
   font-size: 1.15rem;
